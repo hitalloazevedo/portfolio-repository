@@ -1,4 +1,3 @@
-import { PostgresProjectsRepository } from "../../repositories/implementations/PostgresProjectsRepository";
 import { GetAllProjectController } from "./GetAllProjectController";
 import { GetAllProjectUseCase } from "./GetAllProjectUseCase";
 import { MongoDBProjectsRepository } from "../../repositories/implementations/MongoDBProjectsRepository";
