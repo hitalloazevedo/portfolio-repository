@@ -1,11 +1,13 @@
 import { PostgresProjectsRepository } from "../../repositories/implementations/PostgresProjectsRepository";
 import { GetAllProjectController } from "./GetAllProjectController";
 import { GetAllProjectUseCase } from "./GetAllProjectUseCase";
+import { MongoDBProjectsRepository } from "../../repositories/implementations/MongoDBProjectsRepository";
 
-const postgresProjectsRepository = new PostgresProjectsRepository();
+// const postgresProjectsRepository = new PostgresProjectsRepository();
+const mongoProjectsRepository = new MongoDBProjectsRepository();
 
 const getAllProjectUseCase = new GetAllProjectUseCase(
-    postgresProjectsRepository
+    mongoProjectsRepository
 )
 
 const getAllProjectController = new GetAllProjectController(
