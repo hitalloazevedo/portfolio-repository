@@ -6,4 +6,5 @@ export interface IProjectsRepository {
     getIdbyUuid(uuid: string): Promise<unknown>;
     save(project: Project): Promise<void>;
     update(_id: unknown, newData: Partial<Project>): Promise<void>;
+    delete(_id: unknown): Promise<void>;
 }

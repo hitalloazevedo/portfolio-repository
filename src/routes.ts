@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { createProjectController } from "./useCases/CreateProject";
 import { getAllProjectController } from "./useCases/GetAllProject";
 import { updateProjectController } from "./useCases/UpdateProject";
+import { deleteProjectController } from "./useCases/DeleteProject";
 
 const router = Router();
 
@@ -15,6 +16,10 @@ router.get('/projects', (request: Request, response: Response) => {
 
 router.patch('/projects/:uuid', (request: Request, reponse: Response) => {
     updateProjectController.handle(request, reponse);
+})
+
+router.delete('/projects/:uuid', (request: Request, response: Response) => {
+    deleteProjectController.handle(request, response);
 })
 
 export { router };

@@ -174,4 +174,17 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             await this.closeConnection();
         }
     }
+
+    async delete(_id: unknown): Promise<void> {
+        try {
+            await this.connect();
+
+            await ProjectModel.deleteOne({ _id });
+
+        } catch (err) {
+            console.log("Error deleting project", err);
+        } finally {
+            await this.closeConnection();
+        }
+    }
 }
