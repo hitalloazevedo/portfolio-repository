@@ -25,7 +25,6 @@ export class CreateProjectUseCase {
             throw new Error("Project already exists.");
         }
 
-        
         const project = new Project(data);
 
         await this.projectsRepository.save(project);
