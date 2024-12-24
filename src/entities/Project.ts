@@ -1,7 +1,10 @@
 import { ObjectId } from "mongoose";
+import { uuid } from "uuidv4";
 
 export class Project {
     
+    public _id?: ObjectId;
+    public uuid?: string;
     public title: string;
     public description: string;
     public image_url: string;
@@ -9,10 +12,16 @@ export class Project {
     public deploy_url: string;
     public tech_stack: Array<string>;
 
-    constructor (props: Omit<Project, 'id'>, id?: ObjectId){
+    constructor (props: Project){
         
         // Object.assign(this, props);
 
+        if (props.uuid){
+            this.uuid = props.uuid;
+        } else {
+            this.uuid = uuid();
+        }
+        
         this.title = props.title;
         this.description = props.description;
         this.image_url = props.image_url;
