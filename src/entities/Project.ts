@@ -1,20 +1,23 @@
-import { uuid } from "uuidv4";
+import { ObjectId } from "mongoose";
 
 export class Project {
-    public readonly id: string;
-
+    
     public title: string;
     public description: string;
-    public imageUrl: string;
-    public repoUrl: string;
-    public deployUrl: string;
-    public technologies: Array<string> = [];
+    public image_url: string;
+    public repo_url: string;
+    public deploy_url: string;
+    public tech_stack: Array<string>;
 
-    constructor (props: Omit<Project, 'id'>, id?: string){
-        Object.assign(this, props);
+    constructor (props: Omit<Project, 'id'>, id?: ObjectId){
+        
+        // Object.assign(this, props);
 
-        if (!id){
-            this.id = uuid();
-        }
+        this.title = props.title;
+        this.description = props.description;
+        this.image_url = props.image_url;
+        this.repo_url = props.repo_url;
+        this.deploy_url = props.deploy_url;
+        this.tech_stack = props.tech_stack;
     }
 }
