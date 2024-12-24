@@ -7,31 +7,33 @@ export class CreateProjectController {
         private createProjectUseCase: CreateProjectUseCase
     ) {}
 
-    async handle (request: Request, response: Response): Promise<Response> {
+    async handle (request: Request, response: Response) {
         const {
             title,
             description,
-            imageUrl,
-            repoUrl,
-            deployUrl,
-            technologies
+            image_url,
+            repo_url,
+            deploy_url,
+            tech_stack
         } = request.body;
 
         try {
             await this.createProjectUseCase.execute({
                 title,
                 description,
-                imageUrl,
-                repoUrl,
-                deployUrl,
-                technologies
+                image_url,
+                repo_url,
+                deploy_url,
+                tech_stack
             })
     
             return response.status(201).send();
         } catch (err) {
-            return response.status(400).json({
-                message: err.message || 'Unexpected error.'
-            });
+            if (err instanceof Error){
+                return response.status(400).json({
+                    message: err.message || 'Unexpected error.'
+                });
+            }
         }
 
     }
