@@ -1,10 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { ObjectId } from "mongoose";
 
 import { Project } from "../../entities/Project";
 import { IProjectsRepository } from "../IProjectsRepository";
 import dotenv from 'dotenv'
 
 interface IProject extends Document {
+    uuid: string;
     title: string;
     description: string;
     image_url: string;
@@ -14,6 +16,7 @@ interface IProject extends Document {
 }
 
 const ProjectSchema: Schema = new mongoose.Schema({
+    uuid: { type: String, required: true},
     title: { type: String, required: true},
     description: { type: String, required: true},
     image_url: { type: String, required: true},
@@ -68,6 +71,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
             const projects = response.map((p) => {
                 return new Project({ 
+                    uuid: p.uuid,
                     title: p.title, 
                     deploy_url: p.deploy_url, 
                     description: p.description,
@@ -96,6 +100,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
             if (response){
                 return new Project({
+                    uuid: response.uuid,
                     title: response.title, 
                     deploy_url: response.deploy_url, 
                     description: response.description,
@@ -119,6 +124,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             await this.connect();
 
             const newProject = new ProjectModel({
+                uuid: project.uuid,
                 title: project.title,
                 description: project.description,
                 image_url: project.image_url,
@@ -132,6 +138,38 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
         } catch(err) {
             console.log(err);
+        } finally {
+            await this.closeConnection();
+        }
+    }
+
+    async getIdbyUuid(uuid: string): Promise<unknown> {
+        try {
+            await this.connect();
+
+            const project = await ProjectModel.findOne({ uuid }, { _id: 1 })
+            
+            if (!project){
+                throw new Error(`Project with uuid ${uuid} not found.`);
+            }
+
+            return project._id;
+
+        } catch (err) {
+            console.log("Error trying to find project by uuid.", err);
+        } finally {
+            await this.closeConnection();
+        }
+    }
+    
+    async update(_id: unknown, newData: Partial<Project>): Promise<void> {
+        try {
+            await this.connect();
+
+            await ProjectModel.findByIdAndUpdate(_id, { $set: newData});
+
+        } catch (err) {
+            console.log("Error while updating project", err);
         } finally {
             await this.closeConnection();
         }
