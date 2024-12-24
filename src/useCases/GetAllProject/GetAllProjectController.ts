@@ -16,10 +16,11 @@ export class GetAllProjectController {
                 data: allProjects
             });
         } catch (err) {
-            return response.status(400).json({
-                message: err.message || 'Unexpected error.'
-            })
+            if (err instanceof Error){
+                return response.status(400).json({
+                    message: err.message || 'Unexpected error.'
+                })
+            }
         }
-
     }
 }
