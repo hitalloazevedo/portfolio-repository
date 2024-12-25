@@ -16,9 +16,7 @@ export class AuthenticateUserController {
 
             const token: string = await this.authenticateUserUseCase.execute({ email, password })
     
-            return response.status(200).json({
-                token: token
-            });
+            return response.status(200).setHeader('Authorization', `Bearer ${token}`).send();
 
         } catch (err) {
             if (err instanceof Error){
