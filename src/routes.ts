@@ -1,8 +1,11 @@
 import { Request, Response, Router } from "express";
-import { createProjectController } from "./useCases/CreateProject";
-import { getAllProjectController } from "./useCases/GetAllProject";
-import { updateProjectController } from "./useCases/UpdateProject";
-import { deleteProjectController } from "./useCases/DeleteProject";
+import { createProjectController } from "./useCases/projects/CreateProject";
+import { getAllProjectController } from "./useCases/projects/GetAllProject";
+import { updateProjectController } from "./useCases/projects/UpdateProject";
+import { deleteProjectController } from "./useCases/projects/DeleteProject";
+
+import { createUserController } from "./useCases/users/CreateUser";
+import { authenticateUserController } from "./useCases/auth/AuthenticateUser";
 
 const router = Router();
 
@@ -20,6 +23,18 @@ router.patch('/projects/:uuid', (request: Request, reponse: Response) => {
 
 router.delete('/projects/:uuid', (request: Request, response: Response) => {
     deleteProjectController.handle(request, response);
+})
+
+// ===========================================================================
+
+router.post('/signup', (request: Request, response: Response) => {
+    createUserController.handle(request, response);
+});
+
+// ===========================================================================
+
+router.post('/signin', (request: Request, response: Response) => {
+    authenticateUserController.handle(request, response)
 })
 
 export { router };
