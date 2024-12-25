@@ -1,19 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ObjectId } from "mongoose";
-
 import { Project } from "../../entities/Project";
 import { IProjectsRepository } from "../IProjectsRepository";
-import dotenv from 'dotenv'
-
-interface IProject extends Document {
-    uuid: string;
-    title: string;
-    description: string;
-    image_url: string;
-    repo_url: string;
-    deploy_url: string;
-    tech_stack: string[];
-}
+import { MongoDBRepository } from "../MongoDBRepository";
 
 const ProjectSchema: Schema = new mongoose.Schema({
     uuid: { type: String, required: true},
@@ -25,42 +13,14 @@ const ProjectSchema: Schema = new mongoose.Schema({
     tech_stack: { type: [String], required: true}
 });
 
-const ProjectModel = mongoose.model<IProject>('Project', ProjectSchema);
+const ProjectModel = mongoose.model<Project>('Project', ProjectSchema);
 
 
 
-
-
-
-
-export class MongoDBProjectsRepository implements IProjectsRepository {
-
-    private connectionString: string;
+export class MongoDBProjectsRepository extends MongoDBRepository implements IProjectsRepository {
 
     constructor(){
-
-        // configuração para conseguir ler as variaveis de
-        dotenv.config();
-
-        this.connectionString = String(process.env.MONGODB_CONNECTION_STRING);
-
-    }
-
-    async connect(){
-        try {
-            await mongoose.connect(this.connectionString);
-        } catch (err) {
-            console.log("Error connecting to MongoDB: ", err);
-        }
-
-    }
-
-    async closeConnection(): Promise<void> {
-        try {
-            await mongoose.connection.close();
-        } catch (err) {
-            console.log("Error closing MongoDB connection: ", err);
-        }
+        super();
     }
 
     async findAll(): Promise<Project[] | undefined> {
