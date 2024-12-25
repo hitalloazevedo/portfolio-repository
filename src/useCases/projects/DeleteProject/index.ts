@@ -1,4 +1,4 @@
-import { MongoDBProjectsRepository } from "../../repositories/implementations/MongoDBProjectsRepository";
+import { MongoDBProjectsRepository } from "../../../repositories/implementations/MongoDBProjectsRepository";
 import { DeleteProjectController } from "./DeleteProjectContoller";
 import { DeleteProjectUseCase } from "./DeleteProjectUseCase";
 

@@ -1,5 +1,5 @@
-import { Project } from "../../entities/Project";
-import { IProjectsRepository } from "../../repositories/IProjectsRepository";
+import { Project } from "../../../entities/Project";
+import { IProjectsRepository } from "../../../repositories/IProjectsRepository";
 import { ICreateProjectRequestDTO } from "./CreateProjectDTO";
 
 export class CreateProjectUseCase {

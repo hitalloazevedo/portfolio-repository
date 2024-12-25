@@ -1,6 +1,6 @@
 import { GetAllProjectController } from "./GetAllProjectController";
 import { GetAllProjectUseCase } from "./GetAllProjectUseCase";
-import { MongoDBProjectsRepository } from "../../repositories/implementations/MongoDBProjectsRepository";
+import { MongoDBProjectsRepository } from "../../../repositories/implementations/MongoDBProjectsRepository";
 
 // const postgresProjectsRepository = new PostgresProjectsRepository();
 const mongoProjectsRepository = new MongoDBProjectsRepository();

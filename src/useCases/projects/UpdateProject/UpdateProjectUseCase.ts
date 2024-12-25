@@ -1,4 +1,4 @@
-import { IProjectsRepository } from "../../repositories/IProjectsRepository";
+import { IProjectsRepository } from "../../../repositories/IProjectsRepository";
 import { IUpdateProjectRequestDTO } from "./UpdateProjectDTO";
 
 export class UpdateProjectUseCase {
