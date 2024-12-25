@@ -1,10 +1,6 @@
 import { IUsersRepository } from "../../../repositories/IUsersRepository";
 import { User } from "../../../entities/User";
-
-interface ICreateUserRequestDTO {
-    email: string;
-    password: string;
-}
+import { ICreateUserRequestDTO } from "./CreateUserDTO";
 
 export class CreateUserUseCase {
     constructor (
