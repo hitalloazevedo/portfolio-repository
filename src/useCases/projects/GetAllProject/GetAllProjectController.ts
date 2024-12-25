@@ -7,7 +7,7 @@ export class GetAllProjectController {
         private getAllProjectUseCase: GetAllProjectUseCase
     ) {}
 
-    async handle (request: Request, response: Response){
+    async handle (_request: Request, response: Response){
         
         try {
             const allProjects = await this.getAllProjectUseCase.execute();
@@ -15,6 +15,7 @@ export class GetAllProjectController {
             return response.status(200).json({
                 data: allProjects
             });
+
         } catch (err) {
             if (err instanceof Error){
                 return response.status(400).json({
