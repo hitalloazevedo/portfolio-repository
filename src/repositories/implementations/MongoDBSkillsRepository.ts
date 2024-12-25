@@ -59,7 +59,7 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
             }
 
         } catch (err) {
-            console.log("Error looking for project: ", err);
+            console.log("Error looking for skill: ", err);
         } finally {
             await this.closeConnection();
         }
@@ -70,11 +70,35 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
     }
 
     async update(_id: unknown, newData: Partial<Skill>): Promise<void> {
-        return
+        try {
+            await this.connect();
+
+            await SkillModel.findByIdAndUpdate(_id, { $set: newData});
+
+        } catch (err) {
+            console.log("Error while updating skill", err);
+        } finally {
+            await this.closeConnection();
+        }
     }
 
     async getIdbyUuid(uuid: string): Promise<unknown> {
-        return
+        try {
+            await this.connect();
+
+            const project = await SkillModel.findOne({ uuid }, { _id: 1 })
+            
+            if (!project){
+                throw new Error(`Skill with uuid ${uuid} not found.`);
+            }
+
+            return project._id;
+
+        } catch (err) {
+            console.log("Error trying to find skill by uuid.", err);
+        } finally {
+            await this.closeConnection();
+        }
     }
 
     async delete(_id: unknown): Promise<void> {
