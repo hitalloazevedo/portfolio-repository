@@ -3,8 +3,8 @@ import { uuid } from "uuidv4";
 
 export class Project {
     
-    public _id?: ObjectId;
-    public uuid?: string;
+    public readonly _id?: ObjectId;
+    public readonly uuid?: string;
     public title: string;
     public description: string;
     public image_url: string;
@@ -16,9 +16,9 @@ export class Project {
         
         // Object.assign(this, props);
 
-        if (props.uuid){
-            this.uuid = props.uuid;
-        } else {
+        this.uuid = props.uuid;
+
+        if (!props.uuid) {
             this.uuid = uuid();
         }
         

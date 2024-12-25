@@ -5,15 +5,15 @@ import bcrypt from 'bcrypt'
 // const user = await User.create("", "")
 export class User {
 
-    public readonly uuid: string;
+    public readonly uuid?: string;
     public email: string;
     public password: string
 
     constructor (email: string, password: string, _uuid?: string) {
         
-        if (_uuid) {
-            this.uuid = _uuid;
-        } else {
+        this.uuid = _uuid;
+
+        if (!_uuid) {
             this.uuid = uuid();
         }
 
