@@ -8,7 +8,10 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(' ')
+    origin: process.env.ALLOWED_ORIGINS?.split(' '),
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Authorization']
 }))
 
 app.use(express.json())
