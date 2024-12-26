@@ -22,7 +22,7 @@ export class AuthenticateUserUseCase {
             throw new Error("Invalid credentials.")
         }
 
-        const token = this.tokenService.generateToken({ email: savedUser.email, uuid: savedUser.uuid })
+        const token = this.tokenService.generateToken({ email: savedUser.email, uuid: String(savedUser.uuid) })
 
         return token;
 
