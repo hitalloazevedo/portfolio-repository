@@ -1,4 +1,4 @@
-import { IProjectsRepository } from "../../repositories/IProjectsRepository";
+import { IProjectsRepository } from "../../../repositories/IProjectsRepository";
 
 export class DeleteProjectUseCase {
     constructor (
