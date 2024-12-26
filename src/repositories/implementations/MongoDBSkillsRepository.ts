@@ -66,7 +66,28 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
     }
      
     async findAll(): Promise<Skill[] | undefined> {
-        return
+        try {
+            await this.connect();
+
+            const response = await SkillModel.find();
+
+            const skills = response.map((skill) => {
+                return new Skill({ 
+                    title: skill.title,
+                    description: skill.description,
+                    uuid: skill.uuid,
+                    svg_image: skill.svg_image
+                 })
+            })
+
+            return skills;
+
+        } catch (err) {
+            console.log("Error: ", err);
+
+        } finally {
+            await this.closeConnection();
+        }
     }
 
     async update(_id: unknown, newData: Partial<Skill>): Promise<void> {
