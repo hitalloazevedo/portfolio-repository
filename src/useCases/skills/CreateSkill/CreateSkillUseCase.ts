@@ -1,29 +1,26 @@
 import { MongoDBSkillsRepository } from "../../../repositories/implementations/MongoDBSkillsRepository";
 import { ICreateSkillRequestDTO } from "./CreateSkillDTO";
 import { Skill } from "../../../entities/Skill";
+import { svgToBase64 } from "../../../utils/svgImageHandler";
 
 export class CreateSkillUseCase {
     constructor (
         private skillsRepository: MongoDBSkillsRepository
     ) {}
 
-    async execute(data: ICreateSkillRequestDTO) {
+    async execute({ title, description, svg_image }: ICreateSkillRequestDTO) {
         
-        const skillAlreadyExists = await this.skillsRepository.findByTitle(data.title);
+        const skillAlreadyExists = await this.skillsRepository.findByTitle(title);
 
         if (skillAlreadyExists) {
             throw new Error("Skill already exists.");
         }
 
-        const escapedSvg: string = encodeURIComponent(data.svg_image)
-        .replace(/'/g, '%27')
-        .replace(/"/g, '%22');
-
-        const base64Svg = `data:image/svg+xml;charset=utf-8,${escapedSvg}`;
+        const base64Svg = svgToBase64(svg_image);
 
         const skill = new Skill({  
-            title: data.title, 
-            description: data.description, 
+            title, 
+            description,
             svg_image: base64Svg
         })
 
