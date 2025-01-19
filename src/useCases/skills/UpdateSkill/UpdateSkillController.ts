@@ -10,9 +10,9 @@ export class UpdateSkillController {
         try {
 
             const uuid: string = request.params.uuid.toString();
-            const data = request.body;
+            const { title, description, svg_image } = request.body;
 
-            await this.updateSkillsUseCase.execute(uuid, data);
+            await this.updateSkillsUseCase.execute(uuid, { title, description, svg_image});
 
             return response.status(200).send();
             
