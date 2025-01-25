@@ -5,6 +5,7 @@ import { skillRoutes } from "./skillRoutes";
 
 const router = Router();
 
+router.get("/", (request, response) => { response.status(200).json({ message: "backend is running..."}) })
 router.use(authRoutes);
 router.use(projectRoutes);
 router.use(skillRoutes);
