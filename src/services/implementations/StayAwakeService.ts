@@ -13,8 +13,6 @@ export class StayAwakeService implements IStayAwakeService {
             
             https.get(this.url, (response) => {
                 response.statusCode === 200 ? console.log("Backend is alive!") : console.log("Failed to wake up the backend.");
-
-                console.log(response);
                 
             }).on('error', (error) => {
                 console.log("Error during restart: ", error.message);
