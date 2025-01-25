@@ -6,7 +6,7 @@ dotenv.config();
 
 const port = Number(process.env.PORT) || 3000;
 
-const awakeService = new StayAwakeService("https://projects-repository.onrender.com/", 1);
+const awakeService = new StayAwakeService("https://projects-repository.onrender.com", 5);
 
 app.listen(port, () => {
     console.log(`Server running!`);
