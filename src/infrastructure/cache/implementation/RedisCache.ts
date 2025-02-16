@@ -1,6 +1,6 @@
 import { ICache } from "../ICache";
 import Redis from "ioredis";
-import dotenv from "dotenv"
+import dotenv from 'dotenv'
 
 export class RedisCache implements ICache {
 
@@ -8,7 +8,7 @@ export class RedisCache implements ICache {
     private static instance: RedisCache;
 
     private constructor (){
-        // configuração para conseguir ler as variaveis de
+
         dotenv.config();
 
         const redisUrl = String(process.env.REDIS_URL);
@@ -16,8 +16,12 @@ export class RedisCache implements ICache {
         this.client = new Redis(redisUrl, {
             tls: { rejectUnauthorized: false },
             keepAlive: 1000,
-            retryStrategy: (times) => Math.min(times * 50, 2000),
+            retryStrategy: (times) => {
+                console.error(`❌ Redis connection failed. Retrying in ${Math.min(times * 50, 2000)}ms...`);
+                return Math.min(times * 50, 2000); // Retry delay increases with each attempt
+            }
         });
+        
     }
 
     public static getInstance(): RedisCache {
