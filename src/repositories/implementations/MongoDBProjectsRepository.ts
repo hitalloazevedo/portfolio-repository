@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { Project } from "../../entities/Project";
 import { IProjectsRepository } from "../IProjectsRepository";
-import { MongoDBRepository } from "../MongoDBRepository";
+import { ICache } from "../../infrastructure/cache/ICache";
+import { RedisCache } from "../../infrastructure/cache/implementation/RedisCache";
 
 const ProjectSchema: Schema = new mongoose.Schema({
     uuid: { type: String, required: true},
@@ -15,16 +16,36 @@ const ProjectSchema: Schema = new mongoose.Schema({
 
 const ProjectModel = mongoose.model<Project>('Project', ProjectSchema);
 
+export class MongoDBProjectsRepository implements IProjectsRepository {
 
+    private cacheExpirationTime: number;
+    private static instance: MongoDBProjectsRepository;
+    private cache: ICache;
 
-export class MongoDBProjectsRepository extends MongoDBRepository implements IProjectsRepository {
+    private constructor(
+        cache: ICache
+    ){
+        this.cache = cache;
+        this.cacheExpirationTime = 86400; // cache expire in 24 hours
+    }
 
-    constructor(){
-        super();
+    public static getInstance(cache: ICache): MongoDBProjectsRepository {
+        if (!MongoDBProjectsRepository.instance){
+            MongoDBProjectsRepository.instance = new MongoDBProjectsRepository(cache);
+        }
+
+        return MongoDBProjectsRepository.instance;
     }
 
     async findAll(): Promise<Project[] | undefined> {
         try {
+
+            const cacheKey = 'projects';
+            // looking into cache first
+            const allProjects = await this.cache.get<Project[]>(cacheKey);
+            if (allProjects) return allProjects;
+
+            // otherwise, request the data from mongodb
 
             const response = await ProjectModel.find();
 
@@ -39,6 +60,9 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
                     tech_stack: p.tech_stack
                  })
             })
+
+            // before return data, save in cache
+            await this.cache.set<Project[]>(cacheKey, projects, this.cacheExpirationTime);
 
             return projects;
 
@@ -88,7 +112,7 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch(err) {
             console.log(err);
-        } 
+        }
     }
 
     async getIdbyUuid(uuid: string): Promise<unknown> {
@@ -104,7 +128,7 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch (err) {
             console.log("Error trying to find project by uuid.", err);
-        } 
+        }
     }
     
     async update(_id: unknown, newData: Partial<Project>): Promise<void> {
@@ -124,6 +148,6 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch (err) {
             console.log("Error deleting project", err);
-        } 
+        }
     }
 }
