@@ -1,31 +1,33 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
+// This class provides methods to open a connection with MongoDB following Singleton pattern
+// (i.e) after call 
 export class MongoDBRepository {
 
-    protected connectionString: string;
+    private static instance: mongoose.Connection;
 
-    constructor(){
+    public static async openConnection(): Promise<mongoose.Connection>{
+        if (!MongoDBRepository.instance){
+            console.log("Connecting to MongoDB...");
 
-        // configuração para conseguir ler as variaveis de
-        dotenv.config();
+            await mongoose.connect(
+                process.env.MONGODB_CONNECTION_STRING as string
+            )
 
-        this.connectionString = String(process.env.MONGODB_CONNECTION_STRING);
-
-    }
-
-    async connect(){
-        try {
-            await mongoose.connect(this.connectionString);
-        } catch (err) {
-            console.log("Error connecting to MongoDB: ", err);
+            MongoDBRepository.instance = mongoose.connection;
+            MongoDBRepository.instance.on("connected", () => console.log("✅ MongoDB connected"));
+            MongoDBRepository.instance.on("error", (err) => console.error("❌ MongoDB error:", err));
         }
-
+        return MongoDBRepository.instance;
     }
 
-    async closeConnection(): Promise<void> {
+    public static async closeConnection(): Promise<void> {
         try {
-            await mongoose.connection.close();
+            if (MongoDBRepository.instance){
+                await mongoose.connection.close();
+                console.log("MongoDB connection closed successfully.")
+            }
+            console.log("No MongoDB connections to close.")
         } catch (err) {
             console.log("Error closing MongoDB connection: ", err);
         }
