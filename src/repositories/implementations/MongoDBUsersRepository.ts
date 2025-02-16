@@ -1,6 +1,5 @@
 import { User } from "../../entities/User";
 import { IUsersRepository } from "../IUsersRepository";
-import { MongoDBRepository } from "../MongoDBRepository";
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema: Schema = new mongoose.Schema({
@@ -11,15 +10,9 @@ const UserSchema: Schema = new mongoose.Schema({
 
 const UserModel = mongoose.model<User>('User', UserSchema);
 
-export class MongoDBUsersRepository extends MongoDBRepository implements IUsersRepository {
-    constructor () {
-        super();
-    }
-
+export class MongoDBUsersRepository implements IUsersRepository {
     async save(user: User): Promise<void> {
         try {
-
-            await this.connect();
 
             const newUser = new UserModel({
                 uuid: user.uuid,
@@ -33,15 +26,11 @@ export class MongoDBUsersRepository extends MongoDBRepository implements IUsersR
 
         } catch(err) {
             console.log(err);
-        } finally {
-            await this.closeConnection();
         }
     }
 
     async findByEmail(email: string): Promise<User | undefined> {
         try {
-
-            await this.connect();
 
             const response = await UserModel.findOne({ email: email });
 
@@ -52,8 +41,6 @@ export class MongoDBUsersRepository extends MongoDBRepository implements IUsersR
 
         } catch (err) {
             console.log("Error looking for project: ", err);
-        } finally {
-            await this.closeConnection();
         }
     }
 }

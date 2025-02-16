@@ -25,7 +25,6 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
     async findAll(): Promise<Project[] | undefined> {
         try {
-            await this.connect();
 
             const response = await ProjectModel.find();
 
@@ -46,15 +45,11 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
         } catch (err) {
             console.log("Error: ", err);
 
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async findByTitle(title: string): Promise<Project | undefined> {
         try {
-
-            await this.connect();
 
             const response = await ProjectModel.findOne({ title: title});
 
@@ -72,16 +67,11 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch (err) {
             console.log("Error looking for project: ", err);
-        } finally {
-            await this.closeConnection();
         }
-
     }
 
     async save(project: Project): Promise<void> {
         try {
-
-            await this.connect();
 
             const newProject = new ProjectModel({
                 uuid: project.uuid,
@@ -98,14 +88,11 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch(err) {
             console.log(err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async getIdbyUuid(uuid: string): Promise<unknown> {
         try {
-            await this.connect();
 
             const project = await ProjectModel.findOne({ uuid }, { _id: 1 })
             
@@ -117,34 +104,26 @@ export class MongoDBProjectsRepository extends MongoDBRepository implements IPro
 
         } catch (err) {
             console.log("Error trying to find project by uuid.", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
     
     async update(_id: unknown, newData: Partial<Project>): Promise<void> {
         try {
-            await this.connect();
 
             await ProjectModel.findByIdAndUpdate(_id, { $set: newData});
 
         } catch (err) {
             console.log("Error while updating project", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async delete(_id: unknown): Promise<void> {
         try {
-            await this.connect();
 
             await ProjectModel.deleteOne({ _id });
 
         } catch (err) {
             console.log("Error deleting project", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 }

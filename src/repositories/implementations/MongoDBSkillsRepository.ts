@@ -1,7 +1,7 @@
 import { Skill } from "../../entities/Skill";
 import { ISkillsRepository } from "../ISkillsRepository";
-import { MongoDBRepository } from "../MongoDBRepository";
 import mongoose, { Schema } from "mongoose";
+
 
 const SkillSchema: Schema = new mongoose.Schema({
     uuid: { type: String, required: true},
@@ -10,19 +10,13 @@ const SkillSchema: Schema = new mongoose.Schema({
     svg_image: { type: String, required: true},
 });
 
+
 const SkillModel = mongoose.model<Skill>('Skill', SkillSchema);
 
-
-export class MongoDBSkillsRepository extends MongoDBRepository implements ISkillsRepository {
-
-    constructor () {
-        super();
-    }
+export class MongoDBSkillsRepository implements ISkillsRepository {
 
     async save(skill: Skill): Promise<void> {
         try {
-
-            await this.connect();
 
             const newSkill = new SkillModel({
                 uuid: skill.uuid,
@@ -37,15 +31,11 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
 
         } catch(err) {
             console.log(err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async findByTitle(title: string): Promise<Skill | undefined> {
         try {
-
-            await this.connect();
 
             const response = await SkillModel.findOne({ title: title});
 
@@ -60,14 +50,11 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
 
         } catch (err) {
             console.log("Error looking for skill: ", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
      
     async findAll(): Promise<Skill[] | undefined> {
         try {
-            await this.connect();
 
             const response = await SkillModel.find();
 
@@ -85,27 +72,21 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
         } catch (err) {
             console.log("Error: ", err);
 
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async update(_id: unknown, newData: Partial<Skill>): Promise<void> {
         try {
-            await this.connect();
 
             await SkillModel.findByIdAndUpdate(_id, { $set: newData});
 
         } catch (err) {
             console.log("Error while updating skill", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async getIdbyUuid(uuid: string): Promise<unknown> {
         try {
-            await this.connect();
 
             const project = await SkillModel.findOne({ uuid }, { _id: 1 })
             
@@ -117,9 +98,7 @@ export class MongoDBSkillsRepository extends MongoDBRepository implements ISkill
 
         } catch (err) {
             console.log("Error trying to find skill by uuid.", err);
-        } finally {
-            await this.closeConnection();
-        }
+        } 
     }
 
     async delete(_id: unknown): Promise<void> {
