@@ -21,11 +21,13 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
     private cacheExpirationTime: number;
     private static instance: MongoDBProjectsRepository;
     private cache: ICache;
+    private cacheKey: string;
 
     private constructor(
         cache: ICache
     ){
         this.cache = cache;
+        this.cacheKey = "projects";
         this.cacheExpirationTime = 86400; // cache expire in 24 hours
     }
 
@@ -39,10 +41,9 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
     async findAll(): Promise<Project[] | undefined> {
         try {
-
-            const cacheKey = 'projects';
+            
             // looking into cache first
-            const allProjects = await this.cache.get<Project[]>(cacheKey);
+            const allProjects = await this.cache.get<Project[]>(this.cacheKey);
             if (allProjects) return allProjects;
 
             // otherwise, request the data from mongodb
@@ -61,8 +62,8 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
                  })
             })
 
-            // before return data, save in cache
-            await this.cache.set<Project[]>(cacheKey, projects, this.cacheExpirationTime);
+            // caching data after query main database
+            await this.cache.set<Project[]>(this.cacheKey, projects, this.cacheExpirationTime);
 
             return projects;
 
@@ -110,6 +111,9 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             await newProject.save();
             console.log("Project saved");
 
+            // cleaning the cache after some database modification
+            this.cache.del(this.cacheKey);
+
         } catch(err) {
             console.log(err);
         }
@@ -136,6 +140,9 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
             await ProjectModel.findByIdAndUpdate(_id, { $set: newData});
 
+            // cleaning the cache after some database modification
+            this.cache.del(this.cacheKey);
+
         } catch (err) {
             console.log("Error while updating project", err);
         } 
@@ -145,6 +152,9 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
         try {
 
             await ProjectModel.deleteOne({ _id });
+
+            // cleaning the cache after some database modification
+            this.cache.del(this.cacheKey);
 
         } catch (err) {
             console.log("Error deleting project", err);

@@ -19,11 +19,13 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
     private static instance: MongoDBSkillsRepository;
     private cacheExpirationTime: number;
     private cache: ICache;
+    private cacheKey: string;
 
     private constructor (
         cache: ICache
     ) {
         this.cache = cache;
+        this.cacheKey = "skills";
         this.cacheExpirationTime = 86400; // cache expire in 24 hours
     }
 
@@ -46,8 +48,8 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
             })
 
             await newSkill.save();
-
-            console.log("Skill saved");
+            // cleaning the cache after some database modification
+            this.cache.del(this.cacheKey);
 
         } catch(err) {
             console.log(err);
@@ -76,9 +78,8 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
     async findAll(): Promise<Skill[] | undefined> {
         try {
 
-            const cacheKey = 'skills';
             // looking into cache first
-            const allSkills = await this.cache.get<Skill[]>(cacheKey);
+            const allSkills = await this.cache.get<Skill[]>(this.cacheKey);
             if (allSkills) return allSkills;
 
             // otherwise, request from mongodb
@@ -94,7 +95,8 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
                  })
             })
 
-            await this.cache.set(cacheKey, skills, this.cacheExpirationTime);
+            // caching data after query main database
+            await this.cache.set(this.cacheKey, skills, this.cacheExpirationTime);
 
             return skills;
 
@@ -108,6 +110,10 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
         try {
 
             await SkillModel.findByIdAndUpdate(_id, { $set: newData});
+
+            // cleaning the cache after some database modification
+            this.cache.del(this.cacheKey);
+
 
         } catch (err) {
             console.log("Error while updating skill", err);
@@ -131,7 +137,8 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
     }
 
     async delete(_id: unknown): Promise<void> {
-        return
+        throw new Error("feature not implemented.")
+        return;
     }
 
 }
