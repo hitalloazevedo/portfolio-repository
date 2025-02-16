@@ -22,10 +22,8 @@ export class MongoDBUsersRepository implements IUsersRepository {
 
             await newUser.save();
 
-            console.log("User saved");
-
         } catch(err) {
-            console.log(err);
+            console.log("Error while saving user. " + err);
         }
     }
 
