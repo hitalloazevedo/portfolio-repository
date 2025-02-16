@@ -1,4 +1,5 @@
 import { Skill } from "../../entities/Skill";
+import { ICache } from "../../infrastructure/cache/ICache";
 import { ISkillsRepository } from "../ISkillsRepository";
 import mongoose, { Schema } from "mongoose";
 
@@ -14,6 +15,25 @@ const SkillSchema: Schema = new mongoose.Schema({
 const SkillModel = mongoose.model<Skill>('Skill', SkillSchema);
 
 export class MongoDBSkillsRepository implements ISkillsRepository {
+
+    private static instance: MongoDBSkillsRepository;
+    private cacheExpirationTime: number;
+    private cache: ICache;
+
+    private constructor (
+        cache: ICache
+    ) {
+        this.cache = cache;
+        this.cacheExpirationTime = 86400; // cache expire in 24 hours
+    }
+
+    public static getInstance(cache: ICache): MongoDBSkillsRepository {
+        if (!MongoDBSkillsRepository.instance){
+            MongoDBSkillsRepository.instance = new MongoDBSkillsRepository(cache);
+        }
+
+        return MongoDBSkillsRepository.instance;
+    }
 
     async save(skill: Skill): Promise<void> {
         try {
@@ -31,7 +51,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
 
         } catch(err) {
             console.log(err);
-        } 
+        }
     }
 
     async findByTitle(title: string): Promise<Skill | undefined> {
@@ -56,6 +76,13 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
     async findAll(): Promise<Skill[] | undefined> {
         try {
 
+            const cacheKey = 'skills';
+            // looking into cache first
+            const allSkills = await this.cache.get<Skill[]>(cacheKey);
+            if (allSkills) return allSkills;
+
+            // otherwise, request from mongodb
+
             const response = await SkillModel.find();
 
             const skills = response.map((skill) => {
@@ -66,6 +93,8 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
                     svg_image: skill.svg_image
                  })
             })
+
+            await this.cache.set(cacheKey, skills, this.cacheExpirationTime);
 
             return skills;
 
@@ -82,7 +111,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
 
         } catch (err) {
             console.log("Error while updating skill", err);
-        } 
+        }
     }
 
     async getIdbyUuid(uuid: string): Promise<unknown> {
@@ -98,7 +127,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
 
         } catch (err) {
             console.log("Error trying to find skill by uuid.", err);
-        } 
+        }
     }
 
     async delete(_id: unknown): Promise<void> {
