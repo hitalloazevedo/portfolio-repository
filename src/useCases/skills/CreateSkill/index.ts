@@ -1,11 +1,9 @@
-import { MongoDBSkillsRepository } from "../../../repositories/implementations/MongoDBSkillsRepository";
 import { CreateSkillController } from "./CreateSkillController";
 import { CreateSkillUseCase } from "./CreateSkillUseCase";
-
-const mongoSkillsRepository = new MongoDBSkillsRepository();
+import { mongoDBSkillsRepository } from "../../../shared/singletonsInstances";
 
 const createSkillUseCase = new CreateSkillUseCase(
-    mongoSkillsRepository
+    mongoDBSkillsRepository
 );
 
 const createSkillController = new CreateSkillController(

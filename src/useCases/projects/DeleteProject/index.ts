@@ -1,11 +1,9 @@
-import { MongoDBProjectsRepository } from "../../../repositories/implementations/MongoDBProjectsRepository";
 import { DeleteProjectController } from "./DeleteProjectContoller";
 import { DeleteProjectUseCase } from "./DeleteProjectUseCase";
-
-const mongoProjectsRepository = new MongoDBProjectsRepository();
+import { mongoDBProjectsRepository } from "../../../shared/singletonsInstances";
 
 const deleteProjectUseCase = new DeleteProjectUseCase(
-    mongoProjectsRepository
+    mongoDBProjectsRepository
 );
 
 const deleteProjectController = new DeleteProjectController(

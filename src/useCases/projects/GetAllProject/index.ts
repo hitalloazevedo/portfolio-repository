@@ -1,12 +1,9 @@
 import { GetAllProjectController } from "./GetAllProjectController";
 import { GetAllProjectUseCase } from "./GetAllProjectUseCase";
-import { MongoDBProjectsRepository } from "../../../repositories/implementations/MongoDBProjectsRepository";
-
-// const postgresProjectsRepository = new PostgresProjectsRepository();
-const mongoProjectsRepository = new MongoDBProjectsRepository();
+import { mongoDBProjectsRepository } from "../../../shared/singletonsInstances";
 
 const getAllProjectUseCase = new GetAllProjectUseCase(
-    mongoProjectsRepository
+    mongoDBProjectsRepository
 )
 
 const getAllProjectController = new GetAllProjectController(

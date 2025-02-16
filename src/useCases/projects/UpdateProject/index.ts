@@ -1,11 +1,9 @@
 import { UpdateProjectController } from "./UpdateProjectController";
 import { UpdateProjectUseCase } from "./UpdateProjectUseCase";
-import { MongoDBProjectsRepository } from "../../../repositories/implementations/MongoDBProjectsRepository";
-
-const mongoProjectsRepository = new MongoDBProjectsRepository();
+import { mongoDBProjectsRepository } from "../../../shared/singletonsInstances";
 
 const updateProjectUseCase = new UpdateProjectUseCase(
-    mongoProjectsRepository
+    mongoDBProjectsRepository
 )
 
 const updateProjectController = new UpdateProjectController(

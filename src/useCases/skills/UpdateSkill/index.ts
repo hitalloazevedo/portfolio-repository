@@ -1,11 +1,9 @@
 import { UpdateSkillController } from "./UpdateSkillController";
 import { UpdateSkillUseCase } from "./UpdateSkillUseCase";
-import { MongoDBSkillsRepository } from "../../../repositories/implementations/MongoDBSkillsRepository";
-
-const mongoSkillsRepository = new MongoDBSkillsRepository();
+import { mongoDBSkillsRepository } from "../../../shared/singletonsInstances";
 
 const updateSkillUseCase = new UpdateSkillUseCase(
-    mongoSkillsRepository
+    mongoDBSkillsRepository
 )
 
 const updateSkillController = new UpdateSkillController(
