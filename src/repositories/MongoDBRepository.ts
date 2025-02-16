@@ -6,28 +6,30 @@ export class MongoDBRepository {
 
     private static instance: mongoose.Connection;
 
-    public static async openConnection(): Promise<mongoose.Connection>{
+    public static async openConnection(): Promise<void>{
         if (!MongoDBRepository.instance){
             console.log("Connecting to MongoDB...");
 
-            await mongoose.connect(
-                process.env.MONGODB_CONNECTION_STRING as string
-            )
+            try {
+                await mongoose.connect(
+                    process.env.MONGODB_CONNECTION_STRING as string
+                )
+
+                console.log("Connected to MongoDB database!")
+            } catch (err) {
+                if (err instanceof Error){
+                    console.log("[MongoDB connection error]", err.message);
+                }
+            }
 
             MongoDBRepository.instance = mongoose.connection;
-            MongoDBRepository.instance.on("connected", () => console.log("✅ MongoDB connected"));
-            MongoDBRepository.instance.on("error", (err) => console.error("❌ MongoDB error:", err));
         }
-        return MongoDBRepository.instance;
     }
 
     public static async closeConnection(): Promise<void> {
         try {
-            if (MongoDBRepository.instance){
-                await mongoose.connection.close();
-                console.log("MongoDB connection closed successfully.")
-            }
-            console.log("No MongoDB connections to close.")
+            await mongoose.connection.close();
+            console.log("MongoDB connection closed successfully.")
         } catch (err) {
             console.log("Error closing MongoDB connection: ", err);
         }
