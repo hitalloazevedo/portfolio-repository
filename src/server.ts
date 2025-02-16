@@ -1,5 +1,5 @@
-import { app } from "./app";
 import dotenv from 'dotenv'
+import { app } from "./app";
 import { MongoDBRepository } from "./repositories/MongoDBRepository";
 import { StayAwakeService } from "./services/implementations/StayAwakeService";
 
@@ -12,8 +12,8 @@ const awakeService = new StayAwakeService("https://projects-repository.onrender.
 MongoDBRepository.openConnection();
 
 app.listen(port, () => {
-    console.log(`Server running!`);
+    console.log(`Server running on port ${port}!`);
 
-    // cronjob to make the backend alive
+    // start cronjob to keep the application alive
     awakeService.start();
 })
