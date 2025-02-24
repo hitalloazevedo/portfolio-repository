@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
     "prod": "node ./dist/server.js",
-    "build": "tsc"
+    "build": "tsc && yarn run copy-files",
+    "copy-files": "copyfiles -u 1 ./src/files/**/* ./dist/"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -27,6 +28,7 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "copyfiles": "^2.4.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2"
   }
