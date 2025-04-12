@@ -1,6 +1,12 @@
 Authentication
 
-`/signin`
+`POST /signin`
+```
+{
+  "email": "email@email.com",
+  "password": "password"
+}
+```
 
 first version
 - para cada operação no banco, eu abria e fechava uma conexão com o mongodb
