@@ -1,3 +1,7 @@
+Authentication
+
+`/signin`
+
 first version
 - para cada operação no banco, eu abria e fechava uma conexão com o mongodb
 - eu estou utilizando repositorios, e para cada caso de uso eu instanciava um novo repositorio
