@@ -7,7 +7,21 @@ type CacheRecord<T> = {
 };
 
 export class MemoryCache<V = unknown> implements ICache<V> {
-  private readonly store = new Map<string, CacheRecord<V>>();
+ 
+    private static instance: MemoryCache;
+    private readonly store: Map<string, CacheRecord<V>>;
+
+    private constructor(){
+       this.store = new Map<string, CacheRecord<V>>();
+    }
+
+    public static getInstance(){
+        if (!MemoryCache.instance){
+            MemoryCache.instance = new MemoryCache();
+        }
+        return MemoryCache.instance;
+    }
+
 
   async set(key: string, value: V, ttl?: number): Promise<void> {
     const existing = this.store.get(key);
