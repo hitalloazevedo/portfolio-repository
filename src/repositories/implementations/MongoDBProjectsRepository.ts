@@ -1,8 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { Project } from "../../entities/Project";
 import { IProjectsRepository } from "../IProjectsRepository";
 import { ICache } from "../../infrastructure/cache/ICache";
-import { RedisCache } from "../../infrastructure/cache/implementation/RedisCache";
 
 const ProjectSchema: Schema = new mongoose.Schema({
     uuid: { type: String, required: true},
@@ -20,7 +19,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
 
     private cacheExpirationTime: number;
     private static instance: MongoDBProjectsRepository;
-    private cache: ICache;
+    private cache: ICache<Project[]>;
     private cacheKey: string;
 
     private constructor(
@@ -43,7 +42,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
         try {
             
             // looking into cache first
-            const allProjects = await this.cache.get<Project[]>(this.cacheKey);
+            const allProjects = await this.cache.get(this.cacheKey);
             if (allProjects) return allProjects;
 
             // otherwise, request the data from mongodb
@@ -63,7 +62,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             })
 
             // caching data after query main database
-            await this.cache.set<Project[]>(this.cacheKey, projects, this.cacheExpirationTime);
+            await this.cache.set(this.cacheKey, projects, this.cacheExpirationTime);
 
             return projects;
 
@@ -112,7 +111,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             console.log("Project saved");
 
             // cleaning the cache after some database modification
-            this.cache.del(this.cacheKey);
+            this.cache.delete(this.cacheKey);
 
         } catch(err) {
             console.log(err);
@@ -141,7 +140,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             await ProjectModel.findByIdAndUpdate(_id, { $set: newData});
 
             // cleaning the cache after some database modification
-            this.cache.del(this.cacheKey);
+            this.cache.delete(this.cacheKey);
 
         } catch (err) {
             console.log("Error while updating project", err);
@@ -154,7 +153,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
             await ProjectModel.deleteOne({ _id });
 
             // cleaning the cache after some database modification
-            this.cache.del(this.cacheKey);
+            this.cache.delete(this.cacheKey);
 
         } catch (err) {
             console.log("Error deleting project", err);

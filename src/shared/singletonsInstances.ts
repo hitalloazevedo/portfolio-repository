@@ -1,9 +1,9 @@
-import { RedisCache } from "../infrastructure/cache/implementation/RedisCache";
+import { MemoryCache } from "../infrastructure/cache/implementation/memory-cache";
 import { MongoDBSkillsRepository } from "../repositories/implementations/MongoDBSkillsRepository";
 import { MongoDBProjectsRepository } from "../repositories/implementations/MongoDBProjectsRepository";
 
-const redisCacheInstance = RedisCache.getInstance();
-const mongoDBSkillsRepository = MongoDBSkillsRepository.getInstance(redisCacheInstance);
-const mongoDBProjectsRepository = MongoDBProjectsRepository.getInstance(redisCacheInstance);
+const memoryCacheInstance = MemoryCache.getInstance();
+const mongoDBSkillsRepository = MongoDBSkillsRepository.getInstance(memoryCacheInstance);
+const mongoDBProjectsRepository = MongoDBProjectsRepository.getInstance(memoryCacheInstance);
 
 export { mongoDBProjectsRepository, mongoDBSkillsRepository };
