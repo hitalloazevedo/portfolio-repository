@@ -18,7 +18,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
 
     private static instance: MongoDBSkillsRepository;
     private cacheExpirationTime: number;
-    private cache: ICache;
+    private cache: ICache<Skill[]>;
     private cacheKey: string;
 
     private constructor (
@@ -49,7 +49,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
 
             await newSkill.save();
             // cleaning the cache after some database modification
-            this.cache.del(this.cacheKey);
+            this.cache.delete(this.cacheKey);
 
         } catch(err) {
             console.log(err);
@@ -79,7 +79,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
         try {
 
             // looking into cache first
-            const allSkills = await this.cache.get<Skill[]>(this.cacheKey);
+            const allSkills = await this.cache.get(this.cacheKey);
             if (allSkills) return allSkills;
 
             // otherwise, request from mongodb
@@ -112,7 +112,7 @@ export class MongoDBSkillsRepository implements ISkillsRepository {
             await SkillModel.findByIdAndUpdate(_id, { $set: newData});
 
             // cleaning the cache after some database modification
-            this.cache.del(this.cacheKey);
+            this.cache.delete(this.cacheKey);
 
 
         } catch (err) {
