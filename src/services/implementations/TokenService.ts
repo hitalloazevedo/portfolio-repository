@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { User } from '../../entities/User'
 import dotenv from 'dotenv'
 import { ITokenPayload, ITokenService } from '../ITokenService';
 
