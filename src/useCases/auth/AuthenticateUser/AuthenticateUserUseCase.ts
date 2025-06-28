@@ -1,5 +1,4 @@
 import { IUsersRepository } from "../../../repositories/IUsersRepository";
-import { TokenService } from "../../../services/implementations/TokenService";
 import { ITokenService } from "../../../services/ITokenService";
 import { IAuthenticateUserRequestDTO } from "./AuthenticateUserDTO";
 
