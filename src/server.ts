@@ -2,12 +2,13 @@ import dotenv from 'dotenv'
 import { app } from "./app";
 import { MongoDBRepository } from "./repositories/MongoDBRepository";
 import { StayAwakeService } from "./services/implementations/StayAwakeService";
+import { loadServiceUrl } from './utils/load-service-url';
 
 dotenv.config();
 
 const port = Number(process.env.PORT) || 3000;
-
-const awakeService = new StayAwakeService("https://projects-repository.onrender.com", 14);
+const serviceUrl = loadServiceUrl();
+const awakeService = new StayAwakeService(serviceUrl, 14);
 
 MongoDBRepository.openConnection();
 
