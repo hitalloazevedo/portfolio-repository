@@ -8,12 +8,12 @@ export class Skill {
 
     constructor (props: Skill) {
 
-        this.uuid = props.uuid;
-
+        
         if (!props.uuid) {
             this.uuid = uuid();
         }
         
+        this.uuid = props.uuid;
         this.title = props.title;
         this.description = props.description;
         this.svg_image = props.svg_image

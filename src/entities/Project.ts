@@ -16,12 +16,11 @@ export class Project {
         
         // Object.assign(this, props);
 
-        this.uuid = props.uuid;
-
         if (!props.uuid) {
             this.uuid = uuid();
         }
-        
+
+        this.uuid = props.uuid;
         this.title = props.title;
         this.description = props.description;
         this.image_url = props.image_url;

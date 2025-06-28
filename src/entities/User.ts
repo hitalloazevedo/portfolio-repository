@@ -11,12 +11,12 @@ export class User {
 
     constructor (email: string, password: string, _uuid?: string) {
         
-        this.uuid = _uuid;
-
+        
         if (!_uuid) {
             this.uuid = uuid();
         }
-
+        
+        this.uuid = _uuid;
         this.email = email;
         this.password = password;
 
