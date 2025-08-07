@@ -7,4 +7,5 @@ export interface IProjectsRepository {
     save(project: Project): Promise<void>;
     update(_id: unknown, newData: Partial<Project>): Promise<void>;
     delete(_id: unknown): Promise<void>;
+    findByUUID(uuid: string): Promise<Project | undefined>;
 }

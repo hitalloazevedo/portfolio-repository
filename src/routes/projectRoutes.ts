@@ -4,6 +4,7 @@ import { getAllProjectController } from "../useCases/projects/GetAllProject";
 import { updateProjectController } from "../useCases/projects/UpdateProject";
 import { deleteProjectController } from "../useCases/projects/DeleteProject";
 import { authMiddlewareController } from "../middlewares/AuthMiddleware";
+import { findProjectByUUIDController } from "../useCases/projects/FindProjectByUUID";
 
 const projectRoutes = Router();
 
@@ -13,6 +14,10 @@ projectRoutes.post('/projects', authMiddlewareController, (request: Request, res
 
 projectRoutes.get('/projects', (request: Request, response: Response) => {
     getAllProjectController.handle(request, response)
+})
+
+projectRoutes.get('/projects/:uuid', (request: Request, response: Response) => {
+    findProjectByUUIDController.handle(request, response)
 })
 
 projectRoutes.patch('/projects/:uuid', authMiddlewareController,(request: Request, reponse: Response) => {

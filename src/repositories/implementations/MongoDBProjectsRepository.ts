@@ -2,7 +2,6 @@ import mongoose, { Schema, Document } from "mongoose";
 import { Project } from "../../entities/Project";
 import { IProjectsRepository } from "../IProjectsRepository";
 import { ICache } from "../../infrastructure/cache/ICache";
-import { RedisCache } from "../../infrastructure/cache/implementation/RedisCache";
 
 const ProjectSchema: Schema = new mongoose.Schema({
     uuid: { type: String, required: true},
@@ -29,6 +28,22 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
         this.cache = cache;
         this.cacheKey = "projects";
         this.cacheExpirationTime = 86400; // cache expire in 24 hours
+    }
+
+    async findByUUID(uuid: string): Promise<Project | undefined> {
+        try {
+
+            const project = await ProjectModel.findOne({ uuid }, { _id: 1 })
+            
+            if (!project){
+                throw new Error(`Project with uuid ${uuid} not found.`);
+            }
+
+            return project;
+
+        } catch (err) {
+            console.log("Error trying to find project by uuid.", err);
+        }
     }
 
     public static getInstance(cache: ICache): MongoDBProjectsRepository {
