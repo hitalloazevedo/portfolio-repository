@@ -33,7 +33,7 @@ export class MongoDBProjectsRepository implements IProjectsRepository {
     async findByUUID(uuid: string): Promise<Project | undefined> {
         try {
 
-            const project = await ProjectModel.findOne({ uuid }, { _id: 1 })
+            const project = await ProjectModel.findOne({ uuid });
             
             if (!project){
                 throw new Error(`Project with uuid ${uuid} not found.`);
