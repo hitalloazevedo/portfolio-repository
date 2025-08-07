@@ -1,4 +1,3 @@
-import { File } from "../../entities/File";
 import { ICurriculumRepository } from "../../repositories/ICurriculumRepository";
 
 export class GetCurriculumUseCase {

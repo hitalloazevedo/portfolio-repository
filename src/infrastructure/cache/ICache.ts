@@ -1,5 +1,7 @@
-export interface ICache {
-    get<T>(key: string): Promise<T | null>;
-    set<T>(key: string, value: T, ttl: number): Promise<void>;
-    del(key: string): Promise<void>;
-  }
+export interface ICache<V = any> {
+  set(key: string, value: V, ttl?: number): Promise<void>;
+  get(key: string): Promise<V | null>;
+  delete(key: string): Promise<void>;
+  has(key: string): Promise<boolean>;
+  clear(): void;
+}
