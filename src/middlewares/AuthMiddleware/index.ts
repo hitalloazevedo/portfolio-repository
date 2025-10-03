@@ -1,4 +1,4 @@
-import { AuthMiddleware } from "./AuthMiddleware";
+import { AuthMiddleware } from "./auth";
 import { TokenService } from "../../services/implementations/TokenService";
 import { NextFunction, Request, Response } from "express";
 

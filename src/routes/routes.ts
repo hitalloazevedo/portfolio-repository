@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { authRoutes } from "./authRoutes";
-import { projectRoutes } from "./projectRoutes";
-import { skillRoutes } from "./skillRoutes";
-import { curriculumRouter } from "./curriculumRoutes";
+import { authRoutes } from "./auth";
+import { projectRoutes } from "./project";
+import { skillRoutes } from "./skill";
+import { curriculumRouter } from "./curriculum";
 
 const router = Router();
 

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { ITokenPayload, ITokenService } from '../ITokenService';
+import { getEnv } from '../../utils/get-env-variable';
 
 export class TokenService implements ITokenService {
 
@@ -10,8 +11,8 @@ export class TokenService implements ITokenService {
     constructor() {
 
         dotenv.config();
-        this.jwtSecret = String(process.env.JWT_SECRET);
-        this.jwtExpires = Number(process.env.JWT_EXPIRES_IN);
+        this.jwtSecret = String(getEnv('JWT_SECRET'));
+        this.jwtExpires = Number(getEnv('JWT_EXPIRES_IN'));
 
     }
 

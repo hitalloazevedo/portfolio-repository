@@ -1,40 +1,71 @@
-import { uuid } from "uuidv4";
-import bcrypt from 'bcrypt' 
+import { v4 as uuid } from "uuid";
+import bcrypt from "bcrypt";
+import z from "zod";
+
+const userSchema = z.object({
+  email: z.email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+export interface UserInput {
+  email: string;
+  password: string;
+};
+
+export async function makeUser(props: UserInput): Promise<User> {
+  const data = userSchema.parse(props);
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+
+  return new User({
+    uuid: uuid(),
+    email: data.email,
+    hashedPassword: hashedPassword,
+  });
+}
+
+export function reconstituteUser(props: {
+  uuid: string;
+  email: string;
+  hashedPassword: string;
+}): User {
+  return new User({
+    uuid: props.uuid,
+    email: props.email,
+    hashedPassword: props.hashedPassword,
+  });
+}
 
 
-// const user = await User.create("", "")
 export class User {
+  private uuid: string;
+  private email: string;
+  private hashedPassword: string;
 
-    public readonly uuid?: string;
-    public email: string;
-    public password: string
+  constructor(props: UserProps) {
+    this.uuid = props.uuid;
+    this.email = props.email;
+    this.hashedPassword = props.hashedPassword;
+  }
 
-    constructor (email: string, password: string, _uuid?: string) {
-        
-        
-        if (!_uuid) {
-            this.uuid = uuid();
-        }
-        
-        this.uuid = _uuid;
-        this.email = email;
-        this.password = password;
+  get getUuid() {
+    return this.uuid;
+  }
 
-    }
+  get getEmail() {
+    return this.email;
+  }
 
-    private static async encryptPassword(plainPassword: string): Promise<string> {
-        const salt = await bcrypt.genSalt(10);
-        return await bcrypt.hash(plainPassword, salt);
-    }
+  get getHashedPassword() {
+    return this.hashedPassword;
+  }
 
-    async comparePassword(candidatePassword: string): Promise<boolean> {
-        return await bcrypt.compare(candidatePassword, this.password);
-    }
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.hashedPassword);
+  }
+}
 
-    // factory function
-    static async create(email: string, password: string): Promise<User> {
-        const hashedPassword = await this.encryptPassword(password);
-        const _uuid = uuid();
-        return new User(email, hashedPassword, _uuid);
-    }
+interface UserProps {
+  uuid: string;
+  email: string;
+  hashedPassword: string;
 }

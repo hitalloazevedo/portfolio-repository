@@ -1,31 +1,24 @@
-import { ObjectId } from "mongoose";
 import { uuid } from "uuidv4";
+import { z } from "zod";
 
-export class Project {
-    
-    public readonly _id?: ObjectId;
-    public readonly uuid?: string;
-    public title: string;
-    public description: string;
-    public image_url: string;
-    public repo_url: string;
-    public deploy_url: string;
-    public tech_stack: Array<string>;
+const projectSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  imageUrl: z.url("ImageUrl must be a valid URL"),
+  githubUrl: z.url("GitHubUrl must be a valid URL"),
+  deployUrl: z.url("DeployUrl must be a valid URL"),
+  techStack: z.array(z.string().min(1)).nonempty("TechStack must have at least one technology"),
+});
 
-    constructor (props: Project){
-        
-        // Object.assign(this, props);
+export type ProjectInput = z.infer<typeof projectSchema>;
 
-        if (!props.uuid) {
-            this.uuid = uuid();
-        }
+export type Project = ProjectInput & { uuid: string };
 
-        this.uuid = props.uuid;
-        this.title = props.title;
-        this.description = props.description;
-        this.image_url = props.image_url;
-        this.repo_url = props.repo_url;
-        this.deploy_url = props.deploy_url;
-        this.tech_stack = props.tech_stack;
-    }
+export function makeProject(props: ProjectInput): Project {
+  const data = projectSchema.parse(props);
+
+  return {
+    uuid: uuid(),
+    ...data,
+  };
 }

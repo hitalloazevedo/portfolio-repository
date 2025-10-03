@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { Project } from "../../entities/Project";
-import { IProjectsRepository } from "../IProjectsRepository";
+import { Project } from "../../entities/project";
+import { IProjectsRepository } from "../project.repository";
 import { ICache } from "../../infrastructure/cache/ICache";
 
 const ProjectSchema: Schema = new mongoose.Schema({

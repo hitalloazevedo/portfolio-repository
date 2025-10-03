@@ -1,4 +1,4 @@
-import { File } from "../../entities/File";
+import { File } from "../../entities/pdf-file";
 import { ICurriculumRepository } from "../ICurriculumRepository";
 import path from "path";
 

@@ -1,21 +1,20 @@
 import { uuid } from "uuidv4";
+import { z } from "zod";
 
-export class Skill {
-    public readonly uuid?: string;
-    public title: string;
-    public description: string;
-    public svg_image: string;
+const skillSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  base64Image: z.string().regex(/^data:image\/svg\+xml;base64,/, "Must be a valid base64 svg"),
+})
 
-    constructor (props: Skill) {
+type SkillInput = z.infer<typeof skillSchema>;
 
-        
-        if (!props.uuid) {
-            this.uuid = uuid();
-        }
-        
-        this.uuid = props.uuid;
-        this.title = props.title;
-        this.description = props.description;
-        this.svg_image = props.svg_image
+export type Skill = SkillInput & { uuid: string };
+
+export function makeSkill(props: SkillInput): Skill {
+    const data = skillSchema.parse(props);
+    return {
+        uuid: uuid(),
+        ...data
     }
 }
