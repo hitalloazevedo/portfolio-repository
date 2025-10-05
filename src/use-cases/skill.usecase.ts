@@ -10,25 +10,24 @@ export class SkillUseCase {
     ){}
 
     async create(dto: CreateSkillRequestDTO){
-        const parsed = CreateSkillSchema.safeParse(dto);
+        const parsed = CreateSkillSchema.parse(dto);
 
+        const {
+            description,
+            title,
+            svgImage
+        } = parsed;
         
-        if (!parsed.success) {
-            const errors = parsed.error.issues.map(e => e.message).join(', ');
-            throw new Error(`Validation failed: ${errors}`);
-        }
-        
-        const data = parsed.data;
-        
-        const skill = await this.repo.findByTitle(data.title);
+        const skill = await this.repo.findByTitle(title);
 
-        if (skill) throw new AlreadyExistsError(`skill ${data.title} already exists.`);
+        if (skill) throw new AlreadyExistsError(`skill ${title} already exists.`);
 
-        const base64Image = svgToBase64(data.svgImage);
+        const base64Image = svgToBase64(svgImage);
+        
         await this.repo.save({
             base64Image,
-            description: data.description,
-            title: data.title
+            description,
+            title
         });
     }
 
