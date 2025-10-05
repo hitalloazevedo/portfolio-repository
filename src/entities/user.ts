@@ -1,4 +1,4 @@
-import { v4 as uuid } from "uuid";
+import { v7 as uuidv7 } from "uuid";
 import bcrypt from "bcrypt";
 import z from "zod";
 
@@ -17,7 +17,7 @@ export async function makeUser(props: UserInput): Promise<User> {
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
   return new User({
-    uuid: uuid(),
+    uuid: uuidv7(),
     email: data.email,
     hashedPassword: hashedPassword,
   });

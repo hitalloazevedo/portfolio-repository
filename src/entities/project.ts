@@ -1,4 +1,4 @@
-import { uuid } from "uuidv4";
+import { v7 as uuidv7 } from "uuid";
 import { z } from "zod";
 
 const projectSchema = z.object({
@@ -18,7 +18,7 @@ export function makeProject(props: ProjectInput): Project {
   const data = projectSchema.parse(props);
 
   return {
-    uuid: uuid(),
+    uuid: uuidv7(),
     ...data,
   };
 }
