@@ -5,7 +5,7 @@ class CurriculumController {
   constructor() {}
   async downloadCurriculum(_: Request, response: Response, next: NextFunction) {
     try {
-      const basePath = path.join(__dirname, "../../files");
+      const basePath = path.join(__dirname, "../files");
       const fileName = "hitallo-azevedo-curriculum.pdf";
       const filePath = path.join(basePath, fileName);
       return response.status(200).download(filePath, fileName, (err) => {

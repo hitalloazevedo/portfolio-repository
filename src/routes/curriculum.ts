@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { curriculumController } from "../use-cases/curriculum/curriculum.controller";
+import { curriculumController } from "../controllers/curriculum.controller";
 
 const curriculumRouter = Router();
 
