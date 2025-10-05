@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthUseCase } from "../use-cases/auth.usecase";
-import { MongoDBUsersRepository } from "../repositories/implementations/MongoDBUsersRepository";
+import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
 import { TokenService } from "../services/implementations/jwt-token.service";
 
 class AuthController {

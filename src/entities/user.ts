@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 import z from "zod";
-import { AuthorizationError } from "../use-cases/errors/authorization.error";
 
 const userSchema = z.object({
   email: z.email("Invalid email"),

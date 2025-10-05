@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { MongoDBUsersRepository } from "../repositories/implementations/MongoDBUsersRepository";
+import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
 import { UserUseCase } from "../use-cases/user.usecase";
 
 class UserController {

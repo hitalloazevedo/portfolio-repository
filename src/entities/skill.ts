@@ -1,4 +1,3 @@
-import { uuid } from "uuidv4";
 import { z } from "zod";
 
 const skillSchema = z.object({
@@ -9,12 +8,9 @@ const skillSchema = z.object({
 
 type SkillInput = z.infer<typeof skillSchema>;
 
-export type Skill = SkillInput & { uuid: string };
+export type Skill = SkillInput;
 
 export function makeSkill(props: SkillInput): Skill {
     const data = skillSchema.parse(props);
-    return {
-        uuid: uuid(),
-        ...data
-    }
+    return data;
 }

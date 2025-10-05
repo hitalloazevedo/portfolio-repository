@@ -1,10 +1,11 @@
 import { Skill } from "../entities/skill";
+import { CreateSkillDTO } from "../use-cases/skill.usecase";
 
-export interface ISkillsRepository {
+export interface SkillRepository {
     findAll(): Promise<Skill[] | null>
     findByTitle(title: string): Promise<Skill | null>;
     getIdbyUuid(uuid: string): Promise<unknown>;
-    save(skill: Skill): Promise<void>;
+    save(skill: CreateSkillDTO): Promise<void>;
     update(_id: unknown, newData: Partial<Skill>): Promise<void>;
     delete(_id: unknown): Promise<void>;
 }
