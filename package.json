@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsnd --transpile-only --respawn --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --transpile-only --respawn ./src/server.ts",
     "prod": "node ./dist/server.js",
     "build": "tsc && yarn run copy-files",
     "copy-files": "copyfiles -u 1 ./src/files/**/* ./dist/",
@@ -27,6 +27,7 @@
     "mongoose": "^8.9.2",
     "node-cron": "^3.0.3",
     "path": "^0.12.7",
+    "ts-node": "^10.9.2",
     "uuidv4": "^6.2.13",
     "zod": "^4.1.9"
   },
