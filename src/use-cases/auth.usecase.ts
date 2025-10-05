@@ -1,11 +1,11 @@
-import { IUsersRepository } from "../repositories/user.repository";
-import { ITokenService } from "../services/ITokenService";
+import { JwtTokenService } from "../infra/jwt-token.service";
+import { UserRepository } from "../repositories/user.repository";
 import { AuthorizationError } from "./errors/authorization.error";
 
 export class AuthUseCase {
   constructor(
-    private usersRepository: IUsersRepository,
-    private tokenService: ITokenService
+    private usersRepository: UserRepository,
+    private tokenService: JwtTokenService
   ) {}
 
   async login({ email, password }: { email: string; password: string }) {

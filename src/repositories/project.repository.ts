@@ -1,11 +1,8 @@
-import { Project } from "../entities/project";
+import { CreateProjectDTO, Project } from "../entities/project";
 
-export interface IProjectsRepository {
-    findAll(): Promise<Project[] | undefined>
-    findByTitle(title: string): Promise<Project | undefined>;
-    getIdbyUuid(uuid: string): Promise<unknown>;
-    save(project: Project): Promise<void>;
-    update(_id: unknown, newData: Partial<Project>): Promise<void>;
-    delete(_id: unknown): Promise<void>;
-    findByUUID(uuid: string): Promise<Project | undefined>;
+export interface ProjectRepository {
+    findAll(): Promise<Project[]>
+    save(project: CreateProjectDTO): Promise<void>;
+    delete(uuid: string): Promise<void>;
+    findByUUID(uuid: string): Promise<Project | null>;
 }

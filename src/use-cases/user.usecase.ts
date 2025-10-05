@@ -1,10 +1,10 @@
 import { makeUser } from "../entities/user";
-import { IUsersRepository } from "../repositories/user.repository";
+import { UserRepository } from "../repositories/user.repository";
 import { AlreadyExistsError } from "./errors/already-exists.error";
 
 export class UserUseCase {
     constructor (
-        private usersRepository: IUsersRepository
+        private usersRepository: UserRepository
     ) {}
 
     async create(newUserData: {

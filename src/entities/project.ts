@@ -22,3 +22,5 @@ export function makeProject(props: ProjectInput): Project {
     ...data,
   };
 }
+
+export type CreateProjectDTO = z.infer<typeof projectSchema>;
