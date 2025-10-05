@@ -27,6 +27,16 @@ class SkillController {
             next(error);
         }
     }
+
+    async delete(request: Request, response: Response, next: NextFunction) {
+        try {
+            const title = request.params.title;
+            await this.useCase.deleteByTitle(title);
+            return response.status(200).send();
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export const skillController = new SkillController(

@@ -7,5 +7,5 @@ export interface SkillRepository {
     getIdbyUuid(uuid: string): Promise<unknown>;
     save(skill: CreateSkillDTO): Promise<void>;
     update(_id: unknown, newData: Partial<Skill>): Promise<void>;
-    delete(_id: unknown): Promise<void>;
+    delete(title: string): Promise<void>;
 }

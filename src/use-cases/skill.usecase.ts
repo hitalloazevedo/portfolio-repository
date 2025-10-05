@@ -2,6 +2,7 @@ import { SkillRepository } from "../repositories/skills.repository";
 import { z } from 'zod';
 import { AlreadyExistsError } from "./errors/already-exists.error";
 import { svgToBase64 } from "../utils/svg-to-base64";
+import { HttpError } from "./errors/http.error";
 
 export class SkillUseCase {
     constructor(
@@ -24,7 +25,7 @@ export class SkillUseCase {
         if (skill) throw new AlreadyExistsError(`skill ${data.title} already exists.`);
 
         const base64Image = svgToBase64(data.svgImage);
-        this.repo.save({
+        await this.repo.save({
             base64Image,
             description: data.description,
             title: data.title
@@ -33,6 +34,11 @@ export class SkillUseCase {
 
     async findAll(){
         return await this.repo.findAll();
+    }
+
+    async deleteByTitle(title: string){
+        if (!title) throw new HttpError(400, 'invalid input.', 'a title must be provided.');
+        await this.repo.delete(title);
     }
 }
 

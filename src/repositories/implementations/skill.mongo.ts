@@ -15,7 +15,7 @@ export class MongoSkillRepository implements SkillRepository {
 
     async save(dto: CreateSkillDTO): Promise<void> {
         const skill = new SkillModel(dto);
-        skill.save();
+        await skill.save();
     }
 
     async findAll(): Promise<Skill[]> {
@@ -45,8 +45,9 @@ export class MongoSkillRepository implements SkillRepository {
     update(_id: unknown, newData: Partial<Skill>): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    delete(_id: unknown): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    async delete(title: string): Promise<void> {
+        await SkillModel.deleteOne({ title });
     }
 
 }
