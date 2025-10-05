@@ -1,5 +1,6 @@
 import { makeUser } from "../entities/user";
 import { IUsersRepository } from "../repositories/user.repository";
+import { AlreadyExistsError } from "./errors/already-exists.error";
 
 export class UserUseCase {
     constructor (
@@ -12,7 +13,7 @@ export class UserUseCase {
     }) {
         const userExists = await this.usersRepository.findByEmail(newUserData.email);
 
-        if (userExists) throw new Error("User already exists.");
+        if (userExists) throw new AlreadyExistsError("user already exists.");
        
         const user = await makeUser(newUserData);
 

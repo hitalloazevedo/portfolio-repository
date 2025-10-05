@@ -15,7 +15,7 @@ export class MongoDBUsersRepository implements IUsersRepository {
       const newUser = new UserModel({
         uuid: user.uuid,
         email: user.email,
-        password: user.hashedPassword,
+        password: user.password,
       });
 
       await newUser.save();
@@ -27,7 +27,7 @@ export class MongoDBUsersRepository implements IUsersRepository {
     return reconstituteUser({
       uuid: response.uuid,
       email: response.email,
-      hashedPassword: response.hashedPassword,
+      hashedPassword: response.password,
     });
   }
 }

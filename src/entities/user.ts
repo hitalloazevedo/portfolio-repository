@@ -40,12 +40,12 @@ export function reconstituteUser(props: {
 export class User {
   private _uuid: string;
   private _email: string;
-  private _hashedPassword: string;
+  private _password: string;
 
   constructor(props: UserProps) {
     this._uuid = props.uuid;
     this._email = props.email;
-    this._hashedPassword = props.hashedPassword;
+    this._password = props.hashedPassword;
   }
 
   get uuid() {
@@ -56,12 +56,12 @@ export class User {
     return this._email;
   }
 
-  get hashedPassword() {
-    return this._hashedPassword;
+  get password() {
+    return this._password;
   }
 
-  async comparePassword(password: string): Promise<void> {
-    if (!bcrypt.compare(password, this.hashedPassword)) throw new AuthorizationError("error while matching user credentials.");
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }
 

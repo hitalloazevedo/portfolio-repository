@@ -1,6 +1,6 @@
 import { IUsersRepository } from "../repositories/user.repository";
 import { ITokenService } from "../services/ITokenService";
-import { NotFoundError } from "./errors/not-found.error";
+import { AuthorizationError } from "./errors/authorization.error";
 
 export class AuthUseCase {
   constructor(
@@ -11,9 +11,11 @@ export class AuthUseCase {
   async login({ email, password }: { email: string; password: string }) {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) throw new NotFoundError("user not found.");
+    if (!user) throw new AuthorizationError("invalid credentials.");
 
-    await user.comparePassword(password);
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) throw new AuthorizationError("invalid credentials.");
     
     const token = this.tokenService.generateToken({
       email,
