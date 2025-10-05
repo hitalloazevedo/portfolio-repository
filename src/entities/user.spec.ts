@@ -1,4 +1,4 @@
-import { makeUser } from "./user"; // ajuste o caminho conforme seu projeto
+import { makeUser } from "./ser"; // ajuste o caminho conforme seu projeto
 import bcrypt from "bcrypt";
 import { uuid } from "uuidv4";
 

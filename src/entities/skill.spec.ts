@@ -1,4 +1,4 @@
-import { makeSkill } from "./skill";
+import { makeSkill } from "./kill";
 import { ZodError } from "zod";
 
 const validInput = {

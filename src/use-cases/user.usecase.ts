@@ -1,4 +1,4 @@
-import { makeUser } from "../entities/user";
+import { makeUser } from "../entities/ser";
 import { IUsersRepository } from "../repositories/user.repository";
 
 export class UserUseCase {

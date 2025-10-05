@@ -1,4 +1,4 @@
-import { Skill } from "../../../entities/skill";
+import { Skill } from "../../../entities/kill";
 
 export interface IUpdateSkillRequestDTO extends Skill {
     uuid: string;

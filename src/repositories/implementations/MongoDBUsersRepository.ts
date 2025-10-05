@@ -1,4 +1,4 @@
-import { reconstituteUser, User } from "../../entities/user";
+import { reconstituteUser, User } from "../../entities/ser";
 import { IUsersRepository } from "../user.repository";
 import mongoose, { Schema } from "mongoose";
 

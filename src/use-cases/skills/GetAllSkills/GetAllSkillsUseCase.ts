@@ -1,5 +1,5 @@
 import { MongoDBSkillsRepository } from "../../../repositories/implementations/MongoDBSkillsRepository";
-import { Skill } from "../../../entities/skill";
+import { Skill } from "../../../entities/kill";
 
 export class GetAllSkillsUseCase {
     constructor (
