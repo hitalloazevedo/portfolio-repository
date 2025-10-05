@@ -1,4 +1,4 @@
-import { Skill } from "../../entities/kill";
+import { Skill } from "../../entities/skill";
 import { ICache } from "../../infrastructure/cache/ICache";
 import { ISkillsRepository } from "../skills.repository";
 import mongoose, { Schema } from "mongoose";

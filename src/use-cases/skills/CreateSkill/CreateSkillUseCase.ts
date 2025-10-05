@@ -1,6 +1,6 @@
 import { MongoDBSkillsRepository } from "../../../repositories/implementations/MongoDBSkillsRepository";
 import { ICreateSkillRequestDTO } from "./CreateSkillDTO";
-import { Skill } from "../../../entities/kill";
+import { Skill } from "../../../entities/skill";
 import { svgToBase64 } from "../../../utils/svgImageHandler";
 
 export class CreateSkillUseCase {
