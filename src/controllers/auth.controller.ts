@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthUseCase } from "../use-cases/auth.usecase";
 import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
-import { JwtTokenService } from "../services/jwt-token.service";
+import { JwtTokenService } from "../infra/jwt-token.service";
 
 class AuthController {
     constructor (

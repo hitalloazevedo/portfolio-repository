@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { AuthorizationError } from "../use-cases/errors/authorization.error";
-import { JwtTokenService } from "../services/jwt-token.service";
+import { JwtTokenService } from "../infra/jwt-token.service";
 
 class AuthMiddleware {
     constructor (

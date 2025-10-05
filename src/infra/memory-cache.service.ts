@@ -1,12 +1,10 @@
-import { ICache } from "../ICache";
-
 type CacheRecord<T> = {
   value: T;
   expiresAt?: number;
   timeout?: ReturnType<typeof setTimeout>;
 };
 
-export class MemoryCache<V = unknown> implements ICache<V> {
+export class MemoryCache<V = unknown> {
  
     private static instance: MemoryCache;
     private readonly store: Map<string, CacheRecord<V>>;
