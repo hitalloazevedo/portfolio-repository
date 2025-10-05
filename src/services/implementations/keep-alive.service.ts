@@ -1,8 +1,7 @@
-import { IStayAwakeService } from "../IStayAwakeService";
 import cron from "node-cron";
 import https from "https";
 
-export class StayAwakeService implements IStayAwakeService {
+export class KeepAliveService {
     constructor(
         private url: string,
         private minutes: number
