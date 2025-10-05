@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { ITokenPayload, ITokenService } from '../ITokenService';
 import { getEnv } from '../../utils/get-env';
-import { AuthorizationError } from '../../errors/authorization.error';
+import { AuthorizationError } from '../../use-cases/errors/authorization.error';
 import dotenv from 'dotenv';
 
 export class TokenService implements ITokenService {

@@ -13,9 +13,9 @@ const UserModel = mongoose.model<User>("User", UserSchema);
 export class MongoDBUsersRepository implements IUsersRepository {
   async save(user: User): Promise<void> {
       const newUser = new UserModel({
-        uuid: user.getUuid,
-        email: user.getEmail,
-        password: user.getHashedPassword,
+        uuid: user.uuid,
+        email: user.email,
+        password: user.hashedPassword,
       });
 
       await newUser.save();
@@ -27,7 +27,7 @@ export class MongoDBUsersRepository implements IUsersRepository {
     return reconstituteUser({
       uuid: response.uuid,
       email: response.email,
-      hashedPassword: response.password,
+      hashedPassword: response.hashedPassword,
     });
   }
 }

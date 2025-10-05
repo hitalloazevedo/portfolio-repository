@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "../errors/http.error";
+import { HttpError } from "../use-cases/errors/http.error";
 
 export function errorHandler(
   error: Error | HttpError,
@@ -10,6 +10,7 @@ export function errorHandler(
   if (error instanceof HttpError) {
     response.status(error.code).json({
       message: error.message,
+      details: error.details
     });
     return;
   }

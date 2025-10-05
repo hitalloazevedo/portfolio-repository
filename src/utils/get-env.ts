@@ -1,4 +1,4 @@
-import { LoadEnvError } from "../errors/load-env.error";
+import { LoadEnvError } from "../use-cases/errors/load-env.error";
 
 export function getEnv(key: string){
     try {

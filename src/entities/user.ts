@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 import z from "zod";
-import { AuthorizationError } from "../errors/authorization.error";
+import { AuthorizationError } from "../use-cases/errors/authorization.error";
 
 const userSchema = z.object({
   email: z.email("Invalid email"),
@@ -38,26 +38,26 @@ export function reconstituteUser(props: {
 
 
 export class User {
-  private uuid: string;
-  private email: string;
-  private hashedPassword: string;
+  private _uuid: string;
+  private _email: string;
+  private _hashedPassword: string;
 
   constructor(props: UserProps) {
-    this.uuid = props.uuid;
-    this.email = props.email;
-    this.hashedPassword = props.hashedPassword;
+    this._uuid = props.uuid;
+    this._email = props.email;
+    this._hashedPassword = props.hashedPassword;
   }
 
-  get getUuid() {
-    return this.uuid;
+  get uuid() {
+    return this._uuid;
   }
 
-  get getEmail() {
-    return this.email;
+  get email() {
+    return this._email;
   }
 
-  get getHashedPassword() {
-    return this.hashedPassword;
+  get hashedPassword() {
+    return this._hashedPassword;
   }
 
   async comparePassword(password: string): Promise<void> {
