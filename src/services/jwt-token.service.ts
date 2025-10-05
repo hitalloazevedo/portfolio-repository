@@ -1,12 +1,16 @@
 import jwt from 'jsonwebtoken'
-import { ITokenPayload, ITokenService } from '../ITokenService';
-import { getEnv } from '../../utils/get-env';
-import { AuthorizationError } from '../../use-cases/errors/authorization.error';
 import dotenv from 'dotenv';
+import { getEnv } from '../utils/get-env';
+import { AuthorizationError } from '../use-cases/errors/authorization.error';
 
-export class TokenService implements ITokenService {
+export interface ITokenPayload {
+    uuid: string;
+    email: string;
+}
 
-    private static instance: TokenService;
+export class JwtTokenService {
+
+    private static instance: JwtTokenService;
     private jwtSecret: string;
     private jwtExpires: number;
 
@@ -16,11 +20,11 @@ export class TokenService implements ITokenService {
         this.jwtExpires = Number(getEnv('JWT_EXPIRES_IN'));
     }
 
-    public static getInstance(): TokenService {
-        if (!TokenService.instance){
-            TokenService.instance = new TokenService();
+    public static getInstance(): JwtTokenService {
+        if (!JwtTokenService.instance){
+            JwtTokenService.instance = new JwtTokenService();
         }
-        return TokenService.instance;
+        return JwtTokenService.instance;
     }
 
     generateToken(payload: ITokenPayload): string {
