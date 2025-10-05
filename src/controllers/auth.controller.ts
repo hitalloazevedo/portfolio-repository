@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthUseCase } from "../use-cases/auth.usecase";
 import { MongoDBUsersRepository } from "../repositories/implementations/MongoDBUsersRepository";
-import { TokenService } from "../services/implementations/TokenService";
+import { TokenService } from "../services/implementations/jwt-token.service";
 
 class AuthController {
     constructor (
@@ -21,17 +21,16 @@ class AuthController {
         }
     }
 
-    async guard(request: Request, response: Response, next: NextFunction) {
-        
+    async logout(){
+
     }
 }
 
 const mongoUsersRepository = new MongoDBUsersRepository();
-const tokenService = new TokenService();
 
 const authenticateUserUseCase =  new AuthUseCase(
     mongoUsersRepository,
-    tokenService
+    TokenService.getInstance()
 );
 
 export const authController = new AuthController(

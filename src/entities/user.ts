@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 import z from "zod";
+import { AuthorizationError } from "../errors/authorization.error";
 
 const userSchema = z.object({
   email: z.email("Invalid email"),
@@ -59,8 +60,8 @@ export class User {
     return this.hashedPassword;
   }
 
-  async comparePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.hashedPassword);
+  async comparePassword(password: string): Promise<void> {
+    if (!bcrypt.compare(password, this.hashedPassword)) throw new AuthorizationError("error while matching user credentials.");
   }
 }
 

@@ -1,19 +1,26 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 import { ITokenPayload, ITokenService } from '../ITokenService';
-import { getEnv } from '../../utils/get-env-variable';
+import { getEnv } from '../../utils/get-env';
+import { AuthorizationError } from '../../errors/authorization.error';
+import dotenv from 'dotenv';
 
 export class TokenService implements ITokenService {
 
+    private static instance: TokenService;
     private jwtSecret: string;
     private jwtExpires: number;
 
-    constructor() {
-
+    private constructor() {
         dotenv.config();
         this.jwtSecret = String(getEnv('JWT_SECRET'));
         this.jwtExpires = Number(getEnv('JWT_EXPIRES_IN'));
+    }
 
+    public static getInstance(): TokenService {
+        if (!TokenService.instance){
+            TokenService.instance = new TokenService();
+        }
+        return TokenService.instance;
     }
 
     generateToken(payload: ITokenPayload): string {
@@ -29,8 +36,7 @@ export class TokenService implements ITokenService {
         try {
             return jwt.verify(token, this.jwtSecret) as ITokenPayload;
         } catch (err: any) {
-            console.error('Token verification failed:', err.message);
-            throw new Error('Invalid or expired token.');
+            throw new AuthorizationError("failed to validate jwt token.");
         }
     }
 } 

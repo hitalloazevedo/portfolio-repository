@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import { app } from "./app";
 import { MongoDBRepository } from "./repositories/MongoDBRepository";
 import { StayAwakeService } from "./services/implementations/StayAwakeService";
-import { getEnv } from './utils/get-env-variable';
+import { getEnv } from './utils/get-env';
 
 dotenv.config();
 

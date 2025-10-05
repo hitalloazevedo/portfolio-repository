@@ -8,21 +8,15 @@ export class AuthUseCase {
   ) {}
 
   async login({ email, password }: { email: string; password: string }) {
-    const savedUser = await this.usersRepository.findByEmail(email);
+    const user = await this.usersRepository.findByEmail(email);
 
-    if (!savedUser) {
-      throw new Error("User not found.");
-    }
+    if (!user) throw new Error("User not found.");
 
-    const auth = await savedUser.comparePassword(password);
-
-    if (!auth) {
-      throw new Error("Invalid credentials.");
-    }
-
+    await user.comparePassword(password);
+    
     const token = this.tokenService.generateToken({
       email,
-      uuid: savedUser.getUuid,
+      uuid: user.getUuid,
     });
 
     return token;

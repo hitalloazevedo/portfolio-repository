@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getEnv } from '../utils/get-env';
 
 // This class provides methods to open a connection with MongoDB following Singleton pattern
 // (i.e) after call 
@@ -12,7 +13,7 @@ export class MongoDBRepository {
 
             try {
                 await mongoose.connect(
-                    process.env.MONGODB_CONNECTION_STRING as string
+                    getEnv('MONGODB_CONNECTION_STRING')
                 )
 
                 console.log("Connected to MongoDB database!")
@@ -20,6 +21,7 @@ export class MongoDBRepository {
                 if (err instanceof Error){
                     console.log("[MongoDB connection error]", err.message);
                 }
+                process.exit(1);
             }
 
             MongoDBRepository.instance = mongoose.connection;
