@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { makeSkill, Skill } from "../../entities/skill";
-import { CreateSkillDTO } from "../../use-cases/skill.usecase";
 import { SkillRepository } from "../skills.repository";
 
 export const SkillSchema = new mongoose.Schema({
@@ -13,7 +12,7 @@ const SkillModel = mongoose.model<Skill>("Skill", SkillSchema);
 
 export class MongoSkillRepository implements SkillRepository {
 
-    async save(dto: CreateSkillDTO): Promise<void> {
+    async save(dto: Skill): Promise<void> {
         const skill = new SkillModel(dto);
         await skill.save();
     }
