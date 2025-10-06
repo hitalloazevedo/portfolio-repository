@@ -4,13 +4,13 @@ type CacheRecord<T> = {
   timeout?: ReturnType<typeof setTimeout>;
 };
 
-export class MemoryCache<V = unknown> {
+export class MemoryCache {
  
     private static instance: MemoryCache;
-    private readonly store: Map<string, CacheRecord<V>>;
+    private readonly store: Map<string, CacheRecord<any>>;
 
     private constructor(){
-       this.store = new Map<string, CacheRecord<V>>();
+       this.store = new Map<string, CacheRecord<any>>();
     }
 
     public static getInstance(){
@@ -21,7 +21,7 @@ export class MemoryCache<V = unknown> {
     }
 
 
-  async set(key: string, value: V, ttl?: number): Promise<void> {
+  async set<V>(key: string, value: V, ttl?: number): Promise<void> {
     const existing = this.store.get(key);
     if (existing?.timeout) clearTimeout(existing.timeout);
 
@@ -38,7 +38,7 @@ export class MemoryCache<V = unknown> {
     this.store.set(key, record);
   }
 
-  async get(key: string): Promise<V | null> {
+  async get<V>(key: string): Promise<V | null> {
     const record = this.store.get(key);
     if (!record) return null;
 
@@ -67,7 +67,7 @@ export class MemoryCache<V = unknown> {
     this.store.clear();
   }
 
-  private isExpired(record: CacheRecord<V>): boolean {
+  private isExpired<V>(record: CacheRecord<V>): boolean {
     return !!record.expiresAt && Date.now() > record.expiresAt;
   }
 }
