@@ -38,6 +38,6 @@ export class SkillUseCase {
 
   async deleteByTitle(title: string) {
     if (!title) throw new HttpError(400, "invalid input.", "a title must be provided.");
-    await this.repo.delete(title);
+    await this.repo.deleteByTitle(title);
   }
 }
