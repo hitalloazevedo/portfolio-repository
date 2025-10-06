@@ -1,6 +1,7 @@
 import { AlreadyExistsError } from "./errors/already-exists.error";
 import { CreateProjectDTO, projectSchema } from "../entities/project";
 import { ProjectRepository } from '../repositories/interfaces/project.repository';
+import { HttpError } from "./errors/http.error";
 
 export class ProjectUseCase {
     constructor(
@@ -15,6 +16,7 @@ export class ProjectUseCase {
 
         const parsed = projectSchema.parse(dto);
         await this.repo.save(parsed);
+        console.log(`New project (${parsed.title}) created!`);
     }
 
     async findAll() {
@@ -26,6 +28,7 @@ export class ProjectUseCase {
     }
 
     async deleteByTitle(title: string) {
+        if (!title) throw new HttpError(400, "invalid input.", "a title must be provided.");
         await this.repo.deleteByTitle(title);
     }
 }

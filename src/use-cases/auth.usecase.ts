@@ -22,6 +22,8 @@ export class AuthUseCase {
       uuid: user.uuid,
     });
 
+    console.info(`User ${email} logged successfully!`);
+
     return token;
   }
 
