@@ -20,12 +20,22 @@ export class SkillController {
     }
 
     @Get('/skills')
-    async findAll(_: Request, response: Response, next: NextFunction) {
+    async findAll(request: Request, response: Response, next: NextFunction) {
         try {
-            const skills = await this.useCase.findAll();
+            const title = request.query.title?.toString();
+
+            if (!title){
+                const skills = await this.useCase.findAll();
+                return response.status(200).json({
+                    skills
+                });
+            }
+
+            const skill = await this.useCase.findByTitle(title);
             return response.status(200).json({
-                skills
+                skill
             });
+
         } catch (error) {
             next(error);
         }
