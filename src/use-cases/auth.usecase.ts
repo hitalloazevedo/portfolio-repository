@@ -1,4 +1,4 @@
-import { JwtTokenService } from "../infra/jwt-token.service";
+import { JwtTokenService } from "../infra/jwt/jwt-token.service";
 import { UserRepository } from "../repositories/interfaces/user.repository";
 import { AuthorizationError } from "./errors/authorization.error";
 
