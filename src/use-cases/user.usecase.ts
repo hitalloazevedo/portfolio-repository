@@ -18,6 +18,7 @@ export class UserUseCase {
         const user = await makeUser(newUserData);
 
         await this.usersRepository.save(user);
+        console.log(`New user (${user.email}) registered!`);
 
     }
 }
