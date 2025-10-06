@@ -19,7 +19,7 @@ export class ProjectController {
         }
     }
 
-    @Get('projects')
+    @Get('/projects')
     async findAll(request: Request, response: Response, next: NextFunction) {
         try {
             const title = request.query.title?.toString();
@@ -39,18 +39,6 @@ export class ProjectController {
             next(error);
         }
     }
-
-    // async findByTitle(request: Request, response: Response, next: NextFunction) {
-    //     try {
-    //         const title = request.params.title;
-    //         const project = await this.useCase.findByTitle(title);
-    //         return response.status(200).json({
-    //             project
-    //         });
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
 
     @Delete('/projects/:title', authMiddleware.guard())
     async deleteByTitle(request: Request, response: Response, next: NextFunction) {
