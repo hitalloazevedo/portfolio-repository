@@ -1,5 +1,5 @@
 import { reconstituteUser, User } from "../../entities/user";
-import { IUsersRepository } from "../user.repository";
+import { UserRepository } from "../user.repository";
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema: Schema = new mongoose.Schema({
@@ -10,7 +10,7 @@ const UserSchema: Schema = new mongoose.Schema({
 
 const UserModel = mongoose.model<User>("User", UserSchema);
 
-export class MongoDBUsersRepository implements IUsersRepository {
+export class MongoDBUsersRepository implements UserRepository {
   async save(user: User): Promise<void> {
       const newUser = new UserModel({
         uuid: user.uuid,
