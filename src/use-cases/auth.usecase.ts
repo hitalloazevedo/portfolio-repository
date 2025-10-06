@@ -1,5 +1,5 @@
 import { JwtTokenService } from "../infra/jwt-token.service";
-import { UserRepository } from "../repositories/user.repository";
+import { UserRepository } from "../repositories/interfaces/user.repository";
 import { AuthorizationError } from "./errors/authorization.error";
 
 export class AuthUseCase {

@@ -1,9 +1,8 @@
-import { SkillRepository } from "../repositories/skills.repository";
-import { z } from "zod";
 import { AlreadyExistsError } from "./errors/already-exists.error";
-import { svgToBase64 } from "../utils/svg-to-base64";
+import { svgToBase64 } from "../helpers/svg-to-base64";
 import { HttpError } from "./errors/http.error";
-import { makeSkill } from "../entities/skill";
+import { CreateSkillRequestDTO, CreateSkillSchema, makeSkill } from "../entities/skill";
+import { SkillRepository } from "../repositories/interfaces/skill.repository";
 
 export class SkillUseCase {
   constructor(private readonly repo: SkillRepository) {}
@@ -38,11 +37,3 @@ export class SkillUseCase {
     await this.repo.delete(title);
   }
 }
-
-export type CreateSkillRequestDTO = z.infer<typeof CreateSkillSchema>;
-
-export const CreateSkillSchema = z.object({
-  title: z.string().min(1, "Title is required"), // must be non-empty
-  description: z.string().min(1, "Description is required"), // must be non-empty
-  svgImage: z.string().min(1, "SVG image is required"), // must be non-empty
-});

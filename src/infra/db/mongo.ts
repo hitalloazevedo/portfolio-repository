@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { getEnv } from '../../utils/get-env';
+import { getEnv } from '../../helpers/get-env';
 
 // This class provides methods to open a connection with MongoDB following Singleton pattern
 // (i.e) after call 

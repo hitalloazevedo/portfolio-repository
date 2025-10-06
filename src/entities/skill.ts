@@ -14,3 +14,11 @@ export function makeSkill(props: SkillInput): Skill {
     const data = skillSchema.parse(props);
     return data;
 }
+
+export type CreateSkillRequestDTO = z.infer<typeof CreateSkillSchema>;
+
+export const CreateSkillSchema = z.object({
+  title: z.string().min(1, "Title is required"), // must be non-empty
+  description: z.string().min(1, "Description is required"), // must be non-empty
+  svgImage: z.string().min(1, "SVG image is required"), // must be non-empty
+});

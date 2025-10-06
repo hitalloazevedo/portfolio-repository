@@ -1,5 +1,5 @@
 import { makeUser } from "../entities/user";
-import { UserRepository } from "../repositories/user.repository";
+import { UserRepository } from "../repositories/interfaces/user.repository";
 import { AlreadyExistsError } from "./errors/already-exists.error";
 
 export class UserUseCase {
