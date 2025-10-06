@@ -1,27 +1,24 @@
-import { Request, Response, Router } from "express";
-import { findProjectByUUIDController } from "../use-cases/projects/FindProjectByUUID";
+import { NextFunction, Request, Response, Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { projectController } from "../controllers/project.controller";
 
 const projectRoutes = Router();
 
-// projectRoutes.post('/projects', authMiddleware.guard(), (request: Request, response: Response) => {
-//     createProjectController.handle(request, response);
-// });
+projectRoutes.post('/projects', authMiddleware.guard(), (request: Request, response: Response, next: NextFunction) => {
+    projectController.create(request, response, next);
+});
 
-// projectRoutes.get('/projects', (request: Request, response: Response) => {
-//     getAllProjectController.handle(request, response)
-// })
+projectRoutes.get('/projects', (request: Request, response: Response, next: NextFunction) => {
+    projectController.findAll(request, response, next)
+})
 
-// projectRoutes.get('/projects/:uuid', (request: Request, response: Response) => {
-//     findProjectByUUIDController.handle(request, response)
-// })
+projectRoutes.get('/projects/:title', (request: Request, response: Response, next: NextFunction) => {
+    projectController.findByTitle(request, response, next)
+})
 
-// projectRoutes.patch('/projects/:uuid', authMiddleware.guard(), (request: Request, reponse: Response) => {
-//     updateProjectController.handle(request, reponse);
-// })
 
-// projectRoutes.delete('/projects/:uuid', authMiddleware.guard(), (request: Request, response: Response) => {
-//     deleteProjectController.handle(request, response);
-// })
+projectRoutes.delete('/projects/:title', authMiddleware.guard(), (request: Request, response: Response, next: NextFunction) => {
+    projectController.deleteByTitle(request, response, next);
+})
 
 export { projectRoutes };
