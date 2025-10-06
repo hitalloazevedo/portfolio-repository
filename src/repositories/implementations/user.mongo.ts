@@ -1,5 +1,5 @@
 import { reconstituteUser, User } from "../../entities/user";
-import { UserRepository } from "../user.repository";
+import { UserRepository } from "../interfaces/user.repository";
 import mongoose, { Schema } from "mongoose";
 
 const UserSchema: Schema = new mongoose.Schema({

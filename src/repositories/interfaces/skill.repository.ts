@@ -1,4 +1,4 @@
-import { Skill } from "../entities/skill";
+import { Skill } from "../../entities/skill";
 
 export interface SkillRepository {
     findAll(): Promise<Skill[] | null>

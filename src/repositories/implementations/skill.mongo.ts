@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { makeSkill, Skill } from "../../entities/skill";
-import { SkillRepository } from "../skills.repository";
+import { SkillRepository } from "../interfaces/skill.repository";
 
 export const SkillSchema = new mongoose.Schema({
     title: { type: String, required: true, unique: true },

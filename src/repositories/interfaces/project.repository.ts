@@ -1,4 +1,4 @@
-import { CreateProjectDTO, Project } from "../entities/project";
+import { CreateProjectDTO, Project } from "../../entities/project";
 
 export interface ProjectRepository {
     findAll(): Promise<Project[]>

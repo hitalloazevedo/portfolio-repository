@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ProjectRepository } from "../project.repository";
+import { ProjectRepository } from "../interfaces/project.repository";
 import { CreateProjectDTO, makeProject, Project } from "../../entities/project";
 
 export const ProjectSchema = new mongoose.Schema({

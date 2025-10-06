@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
-import { getEnv } from '../utils/get-env';
-import { AuthorizationError } from '../use-cases/errors/authorization.error';
+import { getEnv } from '../../utils/get-env';
+import { AuthorizationError } from '../../use-cases/errors/authorization.error';
 
 export interface ITokenPayload {
     uuid: string;
