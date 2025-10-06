@@ -31,6 +31,10 @@ export class SkillUseCase {
     return await this.repo.findAll();
   }
 
+  async findByTitle(title: string){
+    return await this.repo.findByTitle(title);
+  }
+
   async deleteByTitle(title: string) {
     if (!title)
       throw new HttpError(400, "invalid input.", "a title must be provided.");
