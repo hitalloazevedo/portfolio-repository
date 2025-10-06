@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
-import { getEnv } from '../utils/get-env';
+import { getEnv } from '../../utils/get-env';
 
 // This class provides methods to open a connection with MongoDB following Singleton pattern
 // (i.e) after call 
-export class MongoDBRepository {
+export class MongoClient {
 
     private static instance: mongoose.Connection;
 
     public static async openConnection(): Promise<void>{
-        if (!MongoDBRepository.instance){
+        if (!MongoClient.instance){
             console.log("Connecting to MongoDB...");
 
             try {
@@ -24,7 +24,7 @@ export class MongoDBRepository {
                 process.exit(1);
             }
 
-            MongoDBRepository.instance = mongoose.connection;
+            MongoClient.instance = mongoose.connection;
         }
     }
 

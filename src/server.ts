@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { app } from "./app";
-import { MongoDBRepository } from "./repositories/MongoDBRepository";
+import { MongoClient } from "./infra/db/mongo";
 import { KeepAliveService } from "./infra/keep-alive.service";
 import { getEnv } from './utils/get-env';
 
@@ -10,7 +10,7 @@ const port = Number(getEnv("PORT"));
 const apiUrl = getEnv("SERVER_URL");
 const awakeService = new KeepAliveService(apiUrl, 14);
 
-MongoDBRepository.openConnection();
+MongoClient.openConnection();
 
 app.listen(port, () => {
     
@@ -23,6 +23,6 @@ app.listen(port, () => {
 // Add shutdown handling to close the MongoDB connection when the app shuts down
 process.on('SIGINT', async () => {
     console.log("Gracefully shutting down...");
-    await MongoDBRepository.closeConnection();
+    await MongoClient.closeConnection();
     process.exit(0); // Exit the process
 });
