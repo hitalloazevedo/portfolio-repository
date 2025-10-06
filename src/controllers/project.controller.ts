@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ProjectUseCase } from "../use-cases/project.usecase";
+import { MongoProjectRepository } from "../repositories/implementations/project.mongo";
 
 class ProjectController {
     constructor(
@@ -18,16 +19,28 @@ class ProjectController {
 
     async findAll(_: Request, response: Response, next: NextFunction) {
         try {
-            const Projects = await this.useCase.findAll();
+            const projects = await this.useCase.findAll();
             return response.status(200).json({
-                Projects
+                projects
             });
         } catch (error) {
             next(error);
         }
     }
 
-    async delete(request: Request, response: Response, next: NextFunction) {
+    async findByTitle(request: Request, response: Response, next: NextFunction) {
+        try {
+            const title = request.params.title;
+            const project = await this.useCase.findByTitle(title);
+            return response.status(200).json({
+                project
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async deleteByTitle(request: Request, response: Response, next: NextFunction) {
         try {
             const title = request.params.title;
             await this.useCase.deleteByTitle(title);
@@ -38,8 +51,8 @@ class ProjectController {
     }
 }
 
-// export const projectController = new ProjectController(
-//     new ProjectUseCase(
-//         new MongoProjectRepository()
-//     )
-// );
+export const projectController = new ProjectController(
+    new ProjectUseCase(
+        new MongoProjectRepository()
+    )
+);
