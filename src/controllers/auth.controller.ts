@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthUseCase } from "../use-cases/auth.usecase";
-import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
-import { JwtTokenService } from "../infra/jwt-token.service";
+import { Post } from "../routes/decorator";
 
-class AuthController {
+export class AuthController {
     constructor (
         private useCase: AuthUseCase
     ) {}
 
+    @Post('/login')
     async login(request: Request, response: Response, next: NextFunction) {
         
         try {
@@ -25,10 +25,3 @@ class AuthController {
 
     }
 }
-
-export const authController = new AuthController(
-    new AuthUseCase(
-        new MongoDBUsersRepository(),
-        JwtTokenService.getInstance()
-    )
-);

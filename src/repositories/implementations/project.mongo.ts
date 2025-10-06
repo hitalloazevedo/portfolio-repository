@@ -1,58 +1,63 @@
 import mongoose from "mongoose";
-import { makeSkill, Skill } from "../../entities/skill";
-import { CreateSkillDTO } from "../../use-cases/skill.usecase";
 import { ProjectRepository } from "../project.repository";
-import { CreateProjectDTO, Project } from "../../entities/project";
+import { CreateProjectDTO, makeProject, Project } from "../../entities/project";
 
-export const SkillSchema = new mongoose.Schema({
-    title: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    base64Image: { type: String, required: true },
+export const ProjectSchema = new mongoose.Schema({
+  title: { type: String, required: true, unique: true },
+  description: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  githubUrl: { type: String, required: true },
+  deployUrl: { type: String, required: true },
+  techStack: { type: Array<String>, required: true },
 });
 
-const SkillModel = mongoose.model<Skill>("Skill", SkillSchema);
+const ProjectModel = mongoose.model<Project>("Project", ProjectSchema);
 
 export class MongoProjectRepository implements ProjectRepository {
-    findByUUID(uuid: string): Promise<Project | null> {
-        throw new Error("Method not implemented.");
-    }
+  findByUUID(uuid: string): Promise<Project | null> {
+    throw new Error("Method not implemented.");
+  }
 
-    async save(dto: CreateProjectDTO): Promise<void> {
-        const skill = new SkillModel(dto);
-        await skill.save();
-    }
+  async save(dto: CreateProjectDTO): Promise<void> {
+    const skill = new ProjectModel(dto);
+    await skill.save();
+  }
 
-    async findAll(): Promise<Project[]> {
-        // const response = await SkillModel.find();
-        // return response.map(document => makeSkill({
-        //     base64Image: document.base64Image,
-        //     description: document.description,
-        //     title: document.title,
-        // }));
-        return [] as Array<Project>;
-    }
+  async findAll(): Promise<Project[]> {
+    const response = await ProjectModel.find();
+    return response.map(document => makeProject({
+        deployUrl: document.deployUrl,
+        description: document.description,
+        githubUrl: document.githubUrl,
+        imageUrl: document.imageUrl,
+        techStack: document.techStack,
+        title: document.title
+    }));
+  }
 
-    async findByTitle(title: string): Promise<Skill | null> {
-        const response = await SkillModel.findOne({ title });
-        if (!response) return null;
+  async findByTitle(title: string): Promise<Project | null> {
+    const response = await ProjectModel.findOne({ title });
+    if (!response) return null;
 
-        return makeSkill({
-            base64Image: response.base64Image,
-            description: response.description,
-            title: response.title
-        })
-    }
+    return makeProject({
+        deployUrl: response.deployUrl,
+        description: response.description,
+        githubUrl: response.githubUrl,
+        imageUrl: response.imageUrl,
+        techStack: response.techStack,
+        title: response.title
+    });
+  }
 
-    getIdbyUuid(uuid: string): Promise<unknown> {
-        throw new Error("Method not implemented.");
-    }
+  getIdbyUuid(uuid: string): Promise<unknown> {
+    throw new Error("Method not implemented.");
+  }
 
-    update(_id: unknown, newData: Partial<Skill>): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+  update(_id: unknown, newData: Partial<Project>): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
-    async delete(title: string): Promise<void> {
-        await SkillModel.deleteOne({ title });
-    }
-
+  async deleteByTitle(title: string): Promise<void> {
+    await ProjectModel.deleteOne({ title });
+  }
 }

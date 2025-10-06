@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import path from "path";
+import { Get } from "../routes/decorator";
 
-class CurriculumController {
+export class CurriculumController {
   constructor() {}
+
+  @Get('/curriculum')
   async downloadCurriculum(_: Request, response: Response, next: NextFunction) {
     try {
       const basePath = path.join(__dirname, "../files");
@@ -19,5 +22,3 @@ class CurriculumController {
     }
   }
 }
-
-export const curriculumController = new CurriculumController();

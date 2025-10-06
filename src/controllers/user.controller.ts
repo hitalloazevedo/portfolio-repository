@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
 import { UserUseCase } from "../use-cases/user.usecase";
+import { Post } from "../routes/decorator";
 
-class UserController {
+export class UserController {
     constructor (
         private useCase: UserUseCase
     ) {}
 
+    @Post('/signup')
     async create(request: Request, response: Response, next: NextFunction) {
         
         try {
@@ -18,13 +19,3 @@ class UserController {
         }
     }
 }
-
-const mongoUsersRepository = new MongoDBUsersRepository();
-
-const createUserUseCase = new UserUseCase(
-    mongoUsersRepository
-);
-
-export const userController = new UserController(
-    createUserUseCase
-);

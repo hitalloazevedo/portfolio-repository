@@ -1,15 +1,22 @@
-import { Router } from "express";
-import { authRoutes } from "./auth";
-import { projectRoutes } from "./project";
-import { skillRoutes } from "./skill";
-import { curriculumRouter } from "./curriculum";
+import { AuthController } from "../controllers/auth.controller";
+import { CurriculumController } from "../controllers/curriculum.controller";
+import { ProjectController } from "../controllers/project.controller";
+import { SkillController } from "../controllers/skill.controller";
+import { UserController } from "../controllers/user.controller";
+import { JwtTokenService } from "../infra/jwt-token.service";
+import { MongoProjectRepository } from "../repositories/implementations/project.mongo";
+import { MongoSkillRepository } from "../repositories/implementations/skill.mongo";
+import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";
+import { AuthUseCase } from "../use-cases/auth.usecase";
+import { ProjectUseCase } from "../use-cases/project.usecase";
+import { SkillUseCase } from "../use-cases/skill.usecase";
+import { UserUseCase } from "../use-cases/user.usecase";
+import { loadControllers } from "./router-loader";
 
-const router = Router();
-
-router.get("/", (request, response) => { response.status(200).json({ message: "backend is running..."}) })
-router.use(authRoutes);
-router.use(projectRoutes);
-router.use(skillRoutes);
-router.use(curriculumRouter)
-
-export { router };
+export const router = loadControllers([
+  () => new ProjectController(new ProjectUseCase( new MongoProjectRepository())),
+  () => new UserController(new UserUseCase( new MongoDBUsersRepository())),
+  () => new AuthController(new AuthUseCase( new MongoDBUsersRepository(), JwtTokenService.getInstance())),
+  () => new SkillController(new SkillUseCase( new MongoSkillRepository())),
+  () => new CurriculumController(),
+]);

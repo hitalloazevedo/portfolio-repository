@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { SkillUseCase } from "../use-cases/skill.usecase";
-import { MongoSkillRepository } from "../repositories/implementations/skill.mongo";
+import { Delete, Get, Post } from "../routes/decorator";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
-class SkillController {
+export class SkillController {
     constructor(
         private useCase: SkillUseCase
     ) { }
 
+    @Post('/skills', authMiddleware.guard())
     async create(request: Request, response: Response, next: NextFunction) {
         try {
             const dto = request.body;
@@ -17,6 +19,7 @@ class SkillController {
         }
     }
 
+    @Get('/skills')
     async findAll(_: Request, response: Response, next: NextFunction) {
         try {
             const skills = await this.useCase.findAll();
@@ -28,6 +31,7 @@ class SkillController {
         }
     }
 
+    @Delete('/skills/:title', authMiddleware.guard())
     async delete(request: Request, response: Response, next: NextFunction) {
         try {
             const title = request.params.title;
@@ -38,9 +42,3 @@ class SkillController {
         }
     }
 }
-
-export const skillController = new SkillController(
-    new SkillUseCase(
-        new MongoSkillRepository()
-    )
-);
