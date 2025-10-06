@@ -46,7 +46,10 @@ export class MongoSkillRepository implements SkillRepository {
     }
 
     async delete(title: string): Promise<void> {
-        await SkillModel.deleteOne({ title });
+        const { deletedCount } = await SkillModel.deleteOne({ title });
+        if (deletedCount > 0) {
+            console.log(`Skill (${title}) deleted!`);
+        }
     }
 
 }

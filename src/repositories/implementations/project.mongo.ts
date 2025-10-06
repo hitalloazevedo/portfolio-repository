@@ -58,6 +58,9 @@ export class MongoProjectRepository implements ProjectRepository {
   }
 
   async deleteByTitle(title: string): Promise<void> {
-    await ProjectModel.deleteOne({ title });
+    const { deletedCount } = await ProjectModel.deleteOne({ title });
+    if (deletedCount > 0){
+      console.log(`Project (${title}) deleted!`);
+    }
   }
 }
