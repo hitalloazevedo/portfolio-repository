@@ -49,14 +49,6 @@ export class MongoProjectRepository implements ProjectRepository {
     });
   }
 
-  getIdbyUuid(uuid: string): Promise<unknown> {
-    throw new Error("Method not implemented.");
-  }
-
-  update(_id: unknown, newData: Partial<Project>): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-
   async deleteByTitle(title: string): Promise<void> {
     const { deletedCount } = await ProjectModel.deleteOne({ title });
     if (deletedCount > 0){
