@@ -1,4 +1,3 @@
-import { v7 as uuidv7 } from "uuid";
 import { z } from "zod";
 
 export const projectSchema = z.object({
@@ -12,15 +11,10 @@ export const projectSchema = z.object({
 
 export type ProjectInput = z.infer<typeof projectSchema>;
 
-export type Project = ProjectInput & { uuid: string };
+export type Project = ProjectInput;
 
 export function makeProject(props: ProjectInput): Project {
-  const data = projectSchema.parse(props);
-
-  return {
-    uuid: uuidv7(),
-    ...data,
-  };
+  return projectSchema.parse(props);
 }
 
 export type CreateProjectDTO = z.infer<typeof projectSchema>;
