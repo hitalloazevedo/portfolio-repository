@@ -1,5 +1,5 @@
-import { makeSkill } from "./skill";
 import { ZodError } from "zod";
+import { makeSkill } from '../../src/entities/skill';
 
 const validInput = {
   title: "Node.js",

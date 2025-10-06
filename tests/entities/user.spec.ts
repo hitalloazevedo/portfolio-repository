@@ -1,6 +1,6 @@
-import { makeUser } from "./user"; // ajuste o caminho conforme seu projeto
 import bcrypt from "bcrypt";
 import { v7 as uuidv7 } from "uuid";
+import { makeUser } from '../../src/entities/user';
 
 jest.mock("bcrypt");
 jest.mock("uuidv4");

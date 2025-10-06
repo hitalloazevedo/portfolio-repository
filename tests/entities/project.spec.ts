@@ -1,5 +1,5 @@
-import { makeProject, ProjectInput } from "./project";
-// mock do uuid para resultado previsível
+import { makeProject, ProjectInput } from '../../src/entities/project';
+
 jest.mock("uuidv7", () => ({
   uuid: jest.fn(() => "mocked-uuid"),
 }));

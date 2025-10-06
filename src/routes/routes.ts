@@ -3,7 +3,7 @@ import { CurriculumController } from "../controllers/curriculum.controller";
 import { ProjectController } from "../controllers/project.controller";
 import { SkillController } from "../controllers/skill.controller";
 import { UserController } from "../controllers/user.controller";
-import { JwtTokenService } from "../infra/jwt-token.service";
+import { JwtTokenService } from "../infra/jwt/jwt-token.service";
 import { MongoProjectRepository } from "../repositories/implementations/project.mongo";
 import { MongoSkillRepository } from "../repositories/implementations/skill.mongo";
 import { MongoDBUsersRepository } from "../repositories/implementations/user.mongo";

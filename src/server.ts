@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import { app } from "./app";
 import { MongoClient } from "./infra/db/mongo";
-import { KeepAliveService } from "./infra/keep-alive.service";
+import { KeepAliveService } from "./infra/http/keep-alive.service";
 import { getEnv } from './utils/get-env';
 
 dotenv.config();
